@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Executive Discovery Workshops</title>
+  <meta name="description" content="Register for our Business Blueprint program starting May 13, 2025. Transform your entrepreneurial vision into reality with our comprehensive 8-week course.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Additional styling for registration page */
+    .registration-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+
+    .registration-form {
+      background-color: var(--neutral-100);
+      padding: var(--space-xl);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: var(--space-xs);
+      font-weight: 500;
+      color: var(--neutral-700);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--neutral-400);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: var(--font-size-base);
+      transition: border-color var(--transition-fast);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 3px rgba(71, 167, 223, 0.2);
+    }
+
+    .form-group .hint {
+      font-size: var(--font-size-sm);
+      color: var(--neutral-600);
+      margin-top: var(--space-xs);
+    }
+
+    .registration-details {
+      background-color: var(--neutral-100);
+      padding: var(--space-xl);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+    }
+
+    .registration-details h3 {
+      margin-bottom: var(--space-md);
+      color: var(--primary-dark);
+    }
+
+    .detail-item {
+      margin-bottom: var(--space-lg);
+    }
+
+    .detail-item h4 {
+      display: flex;
+      align-items: center;
+      font-size: var(--font-size-md);
+      margin-bottom: var(--space-sm);
+      color: var(--primary-dark);
+    }
+
+    .detail-item h4 i {
+      color: var(--primary-accent);
+      margin-right: var(--space-sm);
+    }
+
+    .payment-options {
+      margin-top: var(--space-lg);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--neutral-300);
+    }
+
+    .payment-options h4 {
+      margin-bottom: var(--space-md);
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .payment-method input {
+      margin-right: var(--space-sm);
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 1rem;
+      margin-top: var(--space-md);
+      font-size: var(--font-size-lg);
+    }
+
+    .guarantee {
+      display: flex;
+      align-items: center;
+      background-color: rgba(71, 167, 223, 0.1);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin-top: var(--space-lg);
+    }
+
+    .guarantee i {
+      color: var(--primary-accent);
+      font-size: 2rem;
+      margin-right: var(--space-md);
+    }
+
+    .guarantee p {
+      margin: 0;
+      font-size: var(--font-size-sm);
+    }
+
+    @media (max-width: 992px) {
+      .registration-container {
+        grid-template-columns: 1fr;
+      }
+
+      .registration-details {
+        order: -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">
+        <a href="/">Executive Discovery Workshops</a>
+      </div>
+      <nav class="main-navigation">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about.html">About the Program</a></li>
+          <li><a href="/business-blueprint.html">Business Blueprint</a></li>
+          <li><a href="/schedule.html">Workshop Schedule</a></li>
+          <li><a href="/curriculum.html">Curriculum</a></li>
+          <li><a href="/register.html">Register</a></li>
+          <li><a class="btn-login" href="/login.html">Member Login</a></li>
+        </ul>
+      </nav>
+      <button class="mobile-menu-toggle">
+        <span class="sr-only">Menu</span>
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <h1>Register for Business Blueprint</h1>
+        <p>Join our next cohort starting May 13, 2025</p>
+      </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section class="registration-section">
+      <div class="container">
+        <div class="registration-container">
+          <div class="registration-form">
+            <h2>Secure Your Spot</h2>
+            <p>Complete the form below to register for the Business Blueprint program. Our team will contact you within 24 hours to confirm your registration and provide payment instructions.</p>
+
+            <form id="registration-form" action="#" method="POST">
+              <div class="form-group">
+                <label for="full-name">Full Name *</label>
+                <input type="text" id="full-name" name="full-name" required>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required>
+                <div class="hint">We'll send program updates and materials to this address</div>
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" required>
+              </div>
+
+              <div class="form-group">
+                <label for="business-experience">Business Experience</label>
+                <select id="business-experience" name="business-experience">
+                  <option value="none">No business experience yet</option>
+                  <option value="thinking">Thinking about starting a business</option>
+                  <option value="planning">Actively planning a business</option>
+                  <option value="early-stage">Early-stage business owner (0-2 years)</option>
+                  <option value="established">Established business owner (2+ years)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="goals">What are your main goals for taking this program? *</label>
+                <textarea id="goals" name="goals" rows="4" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="referral">How did you hear about us?</label>
+                <select id="referral" name="referral">
+                  <option value="search">Online Search</option>
+                  <option value="social">Social Media</option>
+                  <option value="friend">Friend or Colleague</option>
+                  <option value="email">Email Newsletter</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="payment-options">
+                <h4>Payment Preference</h4>
+
+                <div class="payment-method">
+                  <input type="radio" id="payment-full" name="payment-option" value="full" checked>
+                  <label for="payment-full">Full Payment ($2,400 CAD)</label>
+                </div>
+
+                <div class="payment-method">
+                  <input type="radio" id="payment-monthly" name="payment-option" value="monthly">
+                  <label for="payment-monthly">Monthly Payments ($300 CAD/month for 8 months)</label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary submit-button">Register Now</button>
+
+              <div class="guarantee">
+                <i class="fas fa-shield-alt"></i>
+                <p><strong>Satisfaction Guarantee:</strong> If after the first session you feel this program isn't the right fit for you, we'll provide a full refund – no questions asked.</p>
+              </div>
+            </form>
+          </div>
+
+          <div class="registration-details">
+            <h3>Program Details</h3>
+
+            <div class="detail-item">
+              <h4><i class="fas fa-calendar-alt"></i> Program Dates</h4>
+              <p>May 13 - July 1, 2025</p>
+              <p>8 weekly sessions held every Tuesday at 7:30 PM EST</p>
+            </div>
+
+            <div class="detail-item">
+              <h4><i class="fas fa-dollar-sign"></i> Investment</h4>
+              <p><strong>$2,400 CAD</strong> total (or $300 CAD monthly)</p>
+              <p>Includes all course materials, session recordings, templates, and access to our private community forum.</p>
+            </div>
+
+            <div class="detail-item">
+              <h4><i class="fas fa-user-friends"></i> Limited Capacity</h4>
+              <p>We limit each cohort to 25 participants to ensure personalized attention and feedback.</p>
+              <p><strong>Spots remaining: 7</strong></p>
+            </div>
+
+            <div class="detail-item">
+              <h4><i class="fas fa-question-circle"></i> Have Questions?</h4>
+              <p>Contact us at <a href="mailto:info@executivediscovery.com">info@executivediscovery.com</a> or call <a href="tel:5551234567">(555) 123-4567</a> to speak with our team.</p>
+            </div>
+
+            <a href="/business-blueprint.html" class="btn btn-outline" style="width: 100%;">Learn More About the Program</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Executive Discovery Workshops</h3>
+          <p>Transforming aspiring entrepreneurs into successful executives</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about.html">About the Program</a></li>
+            <li><a href="/business-blueprint.html">Business Blueprint</a></li>
+            <li><a href="/schedule.html">Workshop Schedule</a></li>
+            <li><a href="/curriculum.html">Curriculum</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h4>Contact Us</h4>
+          <p><i class="fas fa-envelope"></i> info@executivediscovery.com</p>
+          <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Executive Discovery Workshops. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu Toggle
+    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+      document.querySelector('.site-header').classList.toggle('menu-open');
+    });
+
+    // Form submission handling (placeholder)
+    document.getElementById('registration-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for registering! Our team will contact you within 24 hours to confirm your spot and provide payment instructions.');
+    });
+  </script>
+</body>
+</html>

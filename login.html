@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Login | Executive Discovery Workshops</title>
+  <meta name="description" content="Member login portal for Executive Discovery Workshops. Access your course materials, assignments, and community forum.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Additional styling for login page */
+    .login-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: var(--neutral-100);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-xl);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .login-header img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: var(--space-md);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: var(--space-xs);
+      font-weight: 500;
+      color: var(--neutral-700);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--neutral-400);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: var(--font-size-base);
+      transition: border-color var(--transition-fast);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 3px rgba(71, 167, 223, 0.2);
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--space-lg);
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+    }
+
+    .remember-me input {
+      margin-right: var(--space-xs);
+    }
+
+    .forgot-password {
+      color: var(--primary-accent);
+      font-size: var(--font-size-sm);
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: var(--space-md);
+    }
+
+    .login-help {
+      margin-top: var(--space-xl);
+      text-align: center;
+      font-size: var(--font-size-sm);
+      color: var(--neutral-600);
+    }
+
+    .login-help a {
+      color: var(--primary-accent);
+      font-weight: 500;
+    }
+
+    .login-section {
+      padding-bottom: var(--space-3xl);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">
+        <a href="/">Executive Discovery Workshops</a>
+      </div>
+      <nav class="main-navigation">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about.html">About the Program</a></li>
+          <li><a href="/business-blueprint.html">Business Blueprint</a></li>
+          <li><a href="/schedule.html">Workshop Schedule</a></li>
+          <li><a href="/curriculum.html">Curriculum</a></li>
+          <li><a href="/register.html">Register</a></li>
+          <li><a class="btn-login" href="/login.html">Member Login</a></li>
+        </ul>
+      </nav>
+      <button class="mobile-menu-toggle">
+        <span class="sr-only">Menu</span>
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <h1>Member Login</h1>
+        <p>Access your course materials and community</p>
+      </div>
+    </section>
+
+    <!-- Login Form -->
+    <section class="login-section">
+      <div class="container">
+        <div class="login-container">
+          <div class="login-header">
+            <i class="fas fa-user-circle fa-4x" style="color: var(--primary-accent);"></i>
+            <h2>Welcome Back</h2>
+            <p>Sign in to access your Executive Discovery resources</p>
+          </div>
+
+          <form id="login-form" action="#" method="POST">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-footer">
+              <div class="remember-me">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember me</label>
+              </div>
+
+              <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary login-button">Sign In</button>
+          </form>
+
+          <div class="login-help">
+            <p>Not registered yet? <a href="/register.html">Register for a program</a></p>
+            <p>Technical issues? <a href="mailto:support@executivediscovery.com">Contact support</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Executive Discovery Workshops</h3>
+          <p>Transforming aspiring entrepreneurs into successful executives</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about.html">About the Program</a></li>
+            <li><a href="/business-blueprint.html">Business Blueprint</a></li>
+            <li><a href="/schedule.html">Workshop Schedule</a></li>
+            <li><a href="/curriculum.html">Curriculum</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h4>Contact Us</h4>
+          <p><i class="fas fa-envelope"></i> info@executivediscovery.com</p>
+          <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Executive Discovery Workshops. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu Toggle
+    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+      document.querySelector('.site-header').classList.toggle('menu-open');
+    });
+
+    // Form submission handling (placeholder)
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('This is a demo login page. In a real implementation, this would authenticate you and redirect to the member dashboard.');
+    });
+  </script>
+</body>
+</html>
