@@ -310,6 +310,8 @@
       </div>
     </div>
   </footer>
+<!-- Replace ONLY the script section at the bottom with this: -->
+<!-- Replace ONLY the script section at the bottom with this: -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
 <script src="https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription"></script>
 <script>
@@ -321,7 +323,7 @@
   // Store form data
   let formData = {};
 
-  // Mobile menu toggle (keep this from original)
+  // Mobile menu toggle (keep original functionality)
   document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
     document.querySelector('.site-header').classList.toggle('menu-open');
   });
@@ -352,9 +354,11 @@
     document.getElementById('successMessage').style.display = 'block';
     document.getElementById('paymentOptions').style.display = 'block';
     
-    // Initialize PayPal buttons
-    const paymentOption = formData.paymentOption;
-    if (paymentOption === 'onetime') {
+    // Clear previous PayPal buttons
+    document.getElementById('paypalButtonContainer').innerHTML = '';
+    
+    // Initialize correct PayPal button
+    if (formData.paymentOption === 'onetime') {
       renderOneTimeButton();
     } else {
       renderSubscriptionButton();
@@ -375,13 +379,14 @@
         });
       },
       onApprove: function(data, actions) {
-        sendFormData();
-        window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
+        return actions.subscription.get().then(function(details) {
+          sendFormData();
+          window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
+        });
       },
       onError: function(err) {
         console.error('Payment error:', err);
-        document.getElementById('errorMessage').textContent = "Payment failed. Please try again.";
-        document.getElementById('errorMessage').style.display = 'block';
+        showError("Payment failed. Please try again or contact support.");
       }
     }).render('#paypalButtonContainer');
   }
@@ -400,13 +405,14 @@
         });
       },
       onApprove: function(data, actions) {
-        sendFormData();
-        window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
+        return actions.subscription.get().then(function(details) {
+          sendFormData();
+          window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
+        });
       },
       onError: function(err) {
         console.error('Payment error:', err);
-        document.getElementById('errorMessage').textContent = "Payment failed. Please try again.";
-        document.getElementById('errorMessage').style.display = 'block';
+        showError("Payment failed. Please try again or contact support.");
       }
     }).render('#paypalButtonContainer');
   }
@@ -426,12 +432,17 @@
       () => console.log('Email sent successfully'),
       (error) => {
         console.error('Email failed:', error);
-        document.getElementById('errorMessage').textContent = "Registration received but confirmation email failed.";
-        document.getElementById('errorMessage').style.display = 'block';
+        showError("Payment processed but confirmation email failed. We've received your registration.");
       }
     );
   }
-</script>
 
+  function showError(message) {
+    document.getElementById('errorMessage').textContent = message;
+    document.getElementById('errorMessage').style.display = 'block';
+    document.getElementById('paymentOptions').style.display = 'none';
+    document.getElementById('registrationForm').style.display = 'block';
+  }
+</script>
 </body>
 </html>
