@@ -315,6 +315,13 @@
     </div>
   </footer>
 <script>
+    // Initialize EmailJS first
+  (function initEmailJS() {
+    if(typeof emailjs === 'undefined') {
+      console.error('EmailJS not loaded - retrying...');
+      setTimeout(initEmailJS, 1000);
+      return;
+    }
   // Initialize EmailJS with error handling
   emailjs.init("QzPU4nIsl3TTDh4xn")
     .then(() => console.log("EmailJS initialized successfully"))
