@@ -310,155 +310,53 @@
       </div>
     </div>
   </footer>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription"></script>
-<script>
-  // 1. INITIALIZE EMAILJS PROPERLY
-  emailjs.init("QzPU4nIsl3TTDh4xn").then(
-    function() {
-      console.log("EmailJS is ready");
-    },
-    function(error) {
-      console.error("EmailJS failed to initialize", error);
-    }
-  );
 
-  // 2. STORE FORM DATA GLOBALLY
-  let formData = {};
-  let paymentCompleted = false;
+  <script>
+    // Mobile Menu Toggle
+    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+      document.querySelector('.site-header').classList.toggle('menu-open');
+    });
 
-  // 3. FORM SUBMISSION HANDLER
-  document.getElementById('registrationForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    if (!this.checkValidity()) {
-      this.reportValidity();
-      return;
-    }
-
-    // Capture all form data
-    formData = {
-      fullName: document.getElementById("fullName").value,
-      email: document.getElementById("email").value,
-      phone: document.getElementById("phone").value,
-      address: document.getElementById("address").value,
-      businessExperience: document.getElementById("businessExperience").value,
-      businessDescription: document.getElementById("businessDescription").value,
-      businessGoals: document.getElementById("businessGoals").value,
-      paymentOption: document.querySelector('input[name="paymentOption"]:checked').value,
-      paymentStatus: "pending"
-    };
-
-    // Show payment options
-    this.style.display = 'none';
-    document.getElementById('successMessage').style.display = 'block';
-    document.getElementById('paymentOptions').style.display = 'block';
-    
-    // Clear previous buttons
-    document.getElementById('paypalButtonContainer').innerHTML = '';
-    
-    // Render correct button
-    if (formData.paymentOption === 'onetime') {
-      renderOneTimeButton();
-    } else {
-      renderSubscriptionButton();
-    }
-  });
-
-  // 4. PAYPAL BUTTON RENDERERS
-  function renderOneTimeButton() {
-    paypal.Buttons({
-      style: { shape: 'rect', color: 'gold', layout: 'vertical' },
-      createSubscription: function(data, actions) {
-        return actions.subscription.create({
-          plan_id: 'P-2Y9180536W353780GM72T6WQ'
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.subscription.get().then(function(details) {
-          formData.paymentStatus = "completed";
-          formData.paymentId = data.subscriptionID;
-          return sendFormData(); // Wait for email to send
-        }).then(function() {
-          window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
-        });
-      },
-      onError: function(err) {
-        handleError("Payment failed. Please try again.");
-      }
-    }).render('#paypalButtonContainer');
-  }
-
-  function renderSubscriptionButton() {
-    paypal.Buttons({
-      style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
-      createSubscription: function(data, actions) {
-        return actions.subscription.create({
-          plan_id: 'P-75L54121H53220933M72SWBQ'
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.subscription.get().then(function(details) {
-          formData.paymentStatus = "completed";
-          formData.paymentId = data.subscriptionID;
-          return sendFormData(); // Wait for email to send
-        }).then(function() {
-          window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
-        });
-      },
-      onError: function(err) {
-        handleError("Payment failed. Please try again.");
-      }
-    }).render('#paypalButtonContainer');
-  }
-
-  // 5. EMAIL SENDING FUNCTION
-  function sendFormData() {
-    return new Promise(function(resolve, reject) {
-      if (!formData.paymentStatus === "completed") {
-        reject("Payment not completed");
+    // Form submission handling
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validate form
+      if (!this.checkValidity()) {
+        this.reportValidity();
         return;
       }
 
-      emailjs.send("service_lnrg1h1", "template_aehp1ev", {
-        fullName: formData.fullName,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        businessExperience: formData.businessExperience,
-        businessDescription: formData.businessDescription,
-        businessGoals: formData.businessGoals,
-        paymentOption: formData.paymentOption === 'onetime' ? 'One-time ($600)' : 'Monthly ($300 x 2)',
-        paymentId: formData.paymentId,
-        date: new Date().toLocaleString()
-      }).then(
-        function(response) {
-          console.log("Email sent:", response);
-          resolve();
-        },
-        function(error) {
-          console.error("Email failed:", error);
-          // Still resolve to proceed to thank-you page
-          // But log this error to your system
-          resolve();
-        }
-      );
+      // Hide form, show success and payment options
+      this.style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+      document.getElementById('paymentOptions').style.display = 'block';
+      
+      // Update PayPal button
+      updatePaypalButton();
+      
+      // Scroll to payment options
+      document.getElementById('paymentOptions').scrollIntoView({ behavior: 'smooth' });
     });
-  }
 
-  // 6. ERROR HANDLER
-  function handleError(message) {
-    console.error(message);
-    document.getElementById('errorMessage').textContent = message;
-    document.getElementById('errorMessage').style.display = 'block';
-    document.getElementById('paymentOptions').style.display = 'none';
-    document.getElementById('registrationForm').style.display = 'block';
-  }
+    // Update PayPal button based on selection
+    function updatePaypalButton() {
+      const paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
+      const paypalButtonContainer = document.getElementById('paypalButtonContainer');
+      
+      paypalButtonContainer.innerHTML = paymentOption === 'onetime' 
+        ? '<a href="YOUR_ONE_TIME_PAYMENT_LINK" class="paypal-button">Pay $600 CAD Now</a>'
+        : '<a href="YOUR_MONTHLY_PAYMENT_LINK" class="paypal-button">Set Up Monthly Payments ($300 CAD)</a>';
+    }
 
-  // 7. MOBILE MENU TOGGLE (ORIGINAL)
-  document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
-    document.querySelector('.site-header').classList.toggle('menu-open');
-  });
-</script>
+    // Update payment options when selection changes
+    document.querySelectorAll('input[name="paymentOption"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (document.getElementById('paymentOptions').style.display === 'block') {
+          updatePaypalButton();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
