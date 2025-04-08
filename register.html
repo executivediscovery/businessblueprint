@@ -361,6 +361,41 @@
         order: -1;
       }
     }
+
+    /* ===== Enhanced Header Styles ===== */
+.site-header {
+  font-family: var(--font-primary);
+  font-weight: 700; /* Bold (adjust to 800 if you want extra bold) */
+  letter-spacing: 0.5px; /* Slightly tighter spacing for upright feel */
+}
+
+.logo a {
+  font-weight: 800; /* Ultra-bold for logo */
+  position: relative;
+  top: 1px; /* Nudge text upward */
+  font-size: 1.1rem; /* Slightly larger */
+}
+
+.main-navigation a {
+  font-weight: 600; /* Semi-bold */
+  letter-spacing: 0.3px;
+  position: relative;
+  top: 1px; /* Vertical alignment tweak */
+}
+
+/* Active/hover states */
+.main-navigation a:hover,
+.main-navigation a.active {
+  font-weight: 700; /* Bold on hover */
+}
+
+/* Mobile menu text alignment */
+@media (max-width: 992px) {
+  .site-header.menu-open .main-navigation a {
+    font-weight: 600; /* Consistent weight */
+    letter-spacing: 0.2px;
+  }
+}
   </style>
 </head>
 <body>
