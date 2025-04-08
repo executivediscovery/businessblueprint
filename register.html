@@ -310,53 +310,151 @@
       </div>
     </div>
   </footer>
+<script>
+  // Initialize EmailJS with error handling
+  emailjs.init("QzPU4nIsl3TTDh4xn")
+    .then(() => console.log("EmailJS initialized successfully"))
+    .catch(error => console.error("EmailJS initialization failed:", error));
 
-  <script>
-    // Mobile Menu Toggle
-    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
-      document.querySelector('.site-header').classList.toggle('menu-open');
-    });
+  // Store form data globally
+  let formData = {};
 
-    // Form submission handling
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Validate form
+  // Handle referral source visibility
+  document.getElementById('referralSource').addEventListener('change', function() {
+    const otherContainer = document.getElementById('otherSourceContainer');
+    if (this.value === 'Other') {
+      otherContainer.classList.remove('hidden');
+      document.getElementById('otherSource').required = true;
+    } else {
+      otherContainer.classList.add('hidden');
+      document.getElementById('otherSource').required = false;
+    }
+  });
+
+  // Mobile menu toggle (if needed)
+  document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+    document.querySelector('.site-header').classList.toggle('menu-open');
+  });
+
+  // Main form submission handler
+  document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    try {
       if (!this.checkValidity()) {
         this.reportValidity();
         return;
       }
 
-      // Hide form, show success and payment options
+      // Capture all form data
+      formData = {
+        fullName: document.getElementById("fullName").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value,
+        businessExperience: document.getElementById("businessExperience").value,
+        businessDescription: document.getElementById("businessDescription").value,
+        businessGoals: document.getElementById("businessGoals").value,
+        referralSource: document.getElementById("referralSource").value,
+        referralName: document.getElementById("referralName").value || 'Not specified',
+        paymentOption: document.querySelector('input[name="paymentOption"]:checked').value
+      };
+
+      // Handle "Other" referral source
+      if (formData.referralSource === 'Other') {
+        formData.referralSource = `Other: ${document.getElementById("otherSource").value}`;
+      }
+
+      // Show payment options
       this.style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
       document.getElementById('paymentOptions').style.display = 'block';
       
-      // Update PayPal button
-      updatePaypalButton();
-      
-      // Scroll to payment options
-      document.getElementById('paymentOptions').scrollIntoView({ behavior: 'smooth' });
-    });
+      // Clear previous PayPal buttons
+      document.querySelectorAll('[id^="paypal-button-container"]').forEach(el => el.innerHTML = '');
 
-    // Update PayPal button based on selection
-    function updatePaypalButton() {
-      const paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
-      const paypalButtonContainer = document.getElementById('paypalButtonContainer');
-      
-      paypalButtonContainer.innerHTML = paymentOption === 'onetime' 
-        ? '<a href="YOUR_ONE_TIME_PAYMENT_LINK" class="paypal-button">Pay $600 CAD Now</a>'
-        : '<a href="YOUR_MONTHLY_PAYMENT_LINK" class="paypal-button">Set Up Monthly Payments ($300 CAD)</a>';
+      // Render correct PayPal button
+      const isOneTime = formData.paymentOption === 'onetime';
+      renderPayPalButton(
+        isOneTime ? 'P-2Y9180536W353780GM72T6WQ' : 'P-75L54121H53220933M72SWBQ',
+        isOneTime ? 'paypal' : 'subscribe'
+      );
+
+    } catch (error) {
+      console.error("Form handling error:", error);
+      showError("Form submission failed. Please try again.");
     }
+  });
 
-    // Update payment options when selection changes
-    document.querySelectorAll('input[name="paymentOption"]').forEach(radio => {
-      radio.addEventListener('change', function() {
-        if (document.getElementById('paymentOptions').style.display === 'block') {
-          updatePaypalButton();
+  // Universal PayPal button renderer
+  function renderPayPalButton(planId, buttonLabel) {
+    try {
+      paypal.Buttons({
+        style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: buttonLabel
+        },
+        createSubscription: function(data, actions) {
+          return actions.subscription.create({ plan_id: planId });
+        },
+        onApprove: function(data, actions) {
+          return actions.subscription.get().then(details => {
+            if(details.status === 'ACTIVE') {
+              sendConfirmationEmail(data.subscriptionID);
+              showThankYouMessage();
+            }
+          });
+        },
+        onError: function(err) {
+          console.error('Payment Error:', err);
+          showError("Payment processing failed. Please try again or contact support.");
         }
+      }).render(`#paypal-button-container-${planId}`);
+    } catch (error) {
+      console.error("PayPal button render error:", error);
+      showError("Payment system unavailable. Please try again later.");
+    }
+  }
+
+  // Email sending function
+  function sendConfirmationEmail(paymentId) {
+    const templateParams = {
+      ...formData,
+      paymentOption: formData.paymentOption === 'onetime' ? 'One-time ($600 CAD)' : 'Monthly ($300 CAD x 2)',
+      paymentId: paymentId,
+      date: new Date().toLocaleString('en-CA', { 
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+      })
+    };
+
+    console.log("Sending email with:", templateParams);
+
+    emailjs.send("service_lnrg1h1", "template_aehp1ev", templateParams)
+      .then(response => {
+        console.log("EmailJS success:", response.status, response.text);
+      })
+      .catch(error => {
+        console.error("EmailJS error:", error);
+        alert('Payment succeeded! However, confirmation email failed. Please contact support.');
       });
-    });
-  </script>
+  }
+
+  // UI Helpers
+  function showThankYouMessage() {
+    document.getElementById('paymentOptions').style.display = 'none';
+    document.getElementById('thankYouMessage').style.display = 'block';
+    setTimeout(() => {
+      window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
+    }, 3000);
+  }
+
+  function showError(message) {
+    const errorEl = document.getElementById('errorMessage');
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+    setTimeout(() => errorEl.style.display = 'none', 5000);
+  }
+</script>
 </body>
 </html>
