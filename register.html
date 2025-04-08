@@ -310,53 +310,128 @@
       </div>
     </div>
   </footer>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription"></script>
+<script>
+  // Initialize EmailJS
+  (function() {
+    emailjs.init("QzPU4nIsl3TTDh4xn");
+  })();
 
-  <script>
-    // Mobile Menu Toggle
-    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
-      document.querySelector('.site-header').classList.toggle('menu-open');
-    });
+  // Store form data
+  let formData = {};
 
-    // Form submission handling
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Validate form
-      if (!this.checkValidity()) {
-        this.reportValidity();
-        return;
-      }
+  // Mobile menu toggle (keep this from original)
+  document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+    document.querySelector('.site-header').classList.toggle('menu-open');
+  });
 
-      // Hide form, show success and payment options
-      this.style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
-      document.getElementById('paymentOptions').style.display = 'block';
-      
-      // Update PayPal button
-      updatePaypalButton();
-      
-      // Scroll to payment options
-      document.getElementById('paymentOptions').scrollIntoView({ behavior: 'smooth' });
-    });
-
-    // Update PayPal button based on selection
-    function updatePaypalButton() {
-      const paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
-      const paypalButtonContainer = document.getElementById('paypalButtonContainer');
-      
-      paypalButtonContainer.innerHTML = paymentOption === 'onetime' 
-        ? '<a href="YOUR_ONE_TIME_PAYMENT_LINK" class="paypal-button">Pay $600 CAD Now</a>'
-        : '<a href="YOUR_MONTHLY_PAYMENT_LINK" class="paypal-button">Set Up Monthly Payments ($300 CAD)</a>';
+  // Form submission handler
+  document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (!this.checkValidity()) {
+      this.reportValidity();
+      return;
     }
 
-    // Update payment options when selection changes
-    document.querySelectorAll('input[name="paymentOption"]').forEach(radio => {
-      radio.addEventListener('change', function() {
-        if (document.getElementById('paymentOptions').style.display === 'block') {
-          updatePaypalButton();
-        }
-      });
-    });
-  </script>
+    // Store all form data
+    formData = {
+      fullName: document.getElementById("fullName").value,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+      address: document.getElementById("address").value,
+      businessExperience: document.getElementById("businessExperience").value,
+      businessDescription: document.getElementById("businessDescription").value,
+      businessGoals: document.getElementById("businessGoals").value,
+      paymentOption: document.querySelector('input[name="paymentOption"]:checked').value
+    };
+
+    // Show payment options
+    this.style.display = 'none';
+    document.getElementById('successMessage').style.display = 'block';
+    document.getElementById('paymentOptions').style.display = 'block';
+    
+    // Initialize PayPal buttons
+    const paymentOption = formData.paymentOption;
+    if (paymentOption === 'onetime') {
+      renderOneTimeButton();
+    } else {
+      renderSubscriptionButton();
+    }
+  });
+
+  function renderOneTimeButton() {
+    paypal.Buttons({
+      style: {
+        shape: 'rect',
+        color: 'gold',
+        layout: 'vertical',
+        label: 'paypal'
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          plan_id: 'P-2Y9180536W353780GM72T6WQ'
+        });
+      },
+      onApprove: function(data, actions) {
+        sendFormData();
+        window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
+      },
+      onError: function(err) {
+        console.error('Payment error:', err);
+        document.getElementById('errorMessage').textContent = "Payment failed. Please try again.";
+        document.getElementById('errorMessage').style.display = 'block';
+      }
+    }).render('#paypalButtonContainer');
+  }
+
+  function renderSubscriptionButton() {
+    paypal.Buttons({
+      style: {
+        shape: 'rect',
+        color: 'gold',
+        layout: 'vertical',
+        label: 'subscribe'
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          plan_id: 'P-75L54121H53220933M72SWBQ'
+        });
+      },
+      onApprove: function(data, actions) {
+        sendFormData();
+        window.location.href = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
+      },
+      onError: function(err) {
+        console.error('Payment error:', err);
+        document.getElementById('errorMessage').textContent = "Payment failed. Please try again.";
+        document.getElementById('errorMessage').style.display = 'block';
+      }
+    }).render('#paypalButtonContainer');
+  }
+
+  function sendFormData() {
+    emailjs.send("service_lnrg1h1", "template_aehp1ev", {
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address,
+      businessExperience: formData.businessExperience,
+      businessDescription: formData.businessDescription,
+      businessGoals: formData.businessGoals,
+      paymentOption: formData.paymentOption === 'onetime' ? 'One-time ($600)' : 'Monthly ($300 x 2)',
+      date: new Date().toLocaleDateString()
+    }).then(
+      () => console.log('Email sent successfully'),
+      (error) => {
+        console.error('Email failed:', error);
+        document.getElementById('errorMessage').textContent = "Registration received but confirmation email failed.";
+        document.getElementById('errorMessage').style.display = 'block';
+      }
+    );
+  }
+</script>
+
 </body>
 </html>
