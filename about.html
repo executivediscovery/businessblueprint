@@ -3,255 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register | Executive Discovery Workshops</title>
-  <meta name="description" content="Register for our Business Blueprint program starting May 27, 2025. Transform your entrepreneurial vision into reality with our comprehensive 8-week course.">
+  <title>About the Program | Executive Discovery Workshops</title>
+  <meta name="description" content="Learn about our comprehensive 3-tiered online training program designed to transform participants from aspiring business owners into successful executives.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <script src="https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-  <style>
-    /* Styles specific to the registration page layout/form if not in styles.css */
-    .registration-container {
-      display: grid;
-      grid-template-columns: 1fr; /* Default single column */
-      gap: var(--space-xl); /* Use CSS variable for gap */
-      align-items: start;
-      padding-top: var(--space-xl); /* Add padding above */
-      padding-bottom: var(--space-xl); /* Add padding below */
-    }
-
-    @media (min-width: 992px) { /* Match breakpoint in styles.css */
-      .registration-container {
-        grid-template-columns: 2fr 1fr; /* Two columns on larger screens */
-      }
-    }
-
-    .registration-form {
-      background-color: var(--neutral-100); /* Use CSS variable */
-      padding: var(--space-xl); /* Use CSS variable */
-      border-radius: var(--radius-md); /* Use CSS variable */
-      box-shadow: var(--shadow-md); /* Use CSS variable */
-    }
-
-     .registration-form h2,
-     .registration-form h3 {
-        font-size: var(--font-size-xl); /* Use CSS variable */
-        color: var(--primary-dark); /* Use CSS variable */
-        margin-bottom: var(--space-lg); /* Use CSS variable */
-        padding-bottom: var(--space-sm);
-        border-bottom: 1px solid var(--neutral-300);
-     }
-     .registration-form h2.form-title { /* Specific class for main title if needed */
-         text-align: center;
-         border-bottom: none;
-         margin-bottom: var(--space-md);
-     }
-
-
-    .registration-details {
-      background-color: var(--neutral-200); /* Use CSS variable */
-      padding: var(--space-lg); /* Use CSS variable */
-      border-radius: var(--radius-md); /* Use CSS variable */
-      box-shadow: var(--shadow-sm); /* Use CSS variable */
-      position: sticky;
-      top: 80px; /* Adjust based on header height (60px) + desired gap */
-    }
-
-     @media (max-width: 991px) { /* Match breakpoint in styles.css */
-        .registration-details {
-            position: static; /* Disable sticky on smaller screens */
-            margin-top: var(--space-lg);
-        }
-    }
-
-    .registration-details h3 {
-        font-size: var(--font-size-lg); /* Use CSS variable */
-        color: var(--primary-dark);
-        margin-bottom: var(--space-md);
-        padding-bottom: var(--space-sm);
-        border-bottom: 1px solid var(--neutral-300);
-    }
-
-    .detail-item { margin-bottom: var(--space-lg); }
-    .detail-item h4 {
-        font-size: var(--font-size-base); /* Use CSS variable */
-        font-weight: 600;
-        margin-bottom: var(--space-xs);
-        display: flex;
-        align-items: center;
-        color: var(--primary-dark);
-     }
-    .detail-item h4 i {
-        margin-right: var(--space-sm);
-        color: var(--primary-accent);
-        width: 1.25em; /* Relative width */
-        text-align: center;
-     }
-    .detail-item p {
-        margin-bottom: var(--space-xs);
-        color: var(--neutral-600);
-        font-size: var(--font-size-sm);
-        padding-left: calc(1.25em + var(--space-sm)); /* Indent text */
-        line-height: 1.4;
-     }
-    .detail-item strong { color: var(--neutral-800); }
-    .detail-item a {
-        color: var(--primary-accent);
-        text-decoration: underline;
-    }
-    .detail-item a:hover {
-        color: #2d8bc0; /* Slightly darker accent */
-    }
-
-
-    /* Form element styling */
-    .form-group {
-      margin-bottom: var(--space-lg);
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: var(--space-sm);
-      font-weight: 500;
-      color: var(--neutral-700);
-    }
-
-    .required {
-      color: #ef4444; /* Keep a distinct required color */
-      margin-left: var(--space-xs);
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 0.75rem 1rem; /* Adjust padding */
-      border: 1px solid var(--neutral-400); /* Use CSS variable */
-      border-radius: var(--radius-sm); /* Use CSS variable */
-      font-size: var(--font-size-base); /* Use CSS variable */
-      color: var(--neutral-800);
-      background-color: var(--neutral-100);
-      transition: border-color var(--transition-fast);
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--primary-accent); /* Use CSS variable */
-      box-shadow: 0 0 0 2px rgba(71, 167, 223, 0.3); /* Subtle focus ring */
-    }
-
-    /* Radio button styling */
-    .payment-options-container {
-      margin-top: var(--space-sm);
-    }
-    .radio-option {
-      display: flex;
-      align-items: center;
-      margin-bottom: var(--space-sm);
-      background-color: var(--neutral-100);
-      padding: var(--space-md);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--neutral-300);
-      cursor: pointer;
-      transition: border-color var(--transition-fast), background-color var(--transition-fast);
-    }
-     .radio-option:hover {
-        border-color: var(--neutral-400);
-     }
-     .radio-option input[type="radio"] {
-        width: 1.1em; /* Slightly larger radio */
-        height: 1.1em;
-        margin-right: var(--space-md);
-        flex-shrink: 0;
-        accent-color: var(--primary-accent); /* Modern way to color radios */
-     }
-     .radio-option label {
-        margin-bottom: 0;
-        flex-grow: 1;
-        cursor: pointer;
-        color: var(--neutral-700);
-        font-weight: 400;
-     }
-     /* Style for checked state */
-      .radio-option input[type="radio"]:checked + label {
-          font-weight: 500;
-          color: var(--primary-dark);
-      }
-      .radio-option:has(input:checked) {
-          border-color: var(--primary-accent);
-          background-color: #f0f9ff; /* Very light blue */
-      }
-
-
-    /* Button specific styles for the form if needed */
-    #submitButton {
-        /* Use btn classes defined in styles.css */
-        width: 100%; /* Make button full width */
-        margin-top: var(--space-lg);
-    }
-
-    /* Payment options section */
-    .payment-options {
-      display: none; /* Hidden by default */
-      margin-top: var(--space-xl);
-      padding: var(--space-lg);
-      border: 1px solid var(--neutral-300);
-      border-radius: var(--radius-md);
-      background-color: var(--neutral-200); /* Light background */
-    }
-     .payment-options h3 {
-        font-size: var(--font-size-lg);
-        margin-bottom: var(--space-md);
-     }
-     .payment-options p {
-         font-size: var(--font-size-sm);
-         color: var(--neutral-600);
-         margin-bottom: var(--space-lg);
-     }
-
-
-    /* Message styling */
-    .message {
-        padding: var(--space-md);
-        margin-bottom: var(--space-lg);
-        border-radius: var(--radius-sm);
-        font-weight: 500;
-        border: 1px solid transparent;
-    }
-    .success-message {
-        background-color: #dcfce7; /* Lighter green */
-        color: #166534; /* Darker green */
-        border-color: #86efac;
-    }
-    .error-message {
-        background-color: #fee2e2; /* Lighter red */
-        color: #991b1b; /* Darker red */
-        border-color: #fca5a5;
-    }
-
-    /* PayPal Button Container */
-    #paypalButtonContainer {
-        margin-top: var(--space-md);
-        min-height: 50px; /* Prevent layout shift */
-    }
-    #paypalButtonContainer p { /* Style processing message */
-        text-align: center;
-        font-weight: 600;
-        color: var(--primary-dark);
-        padding: var(--space-lg) 0;
-    }
-
-  </style>
 </head>
 <body>
-
   <header class="site-header">
     <div class="container">
       <div class="logo">
-        <a href="/businessblueprint/">Executive Discovery Workshops</a>
+        <a href="/businessblueprint">Executive Discovery Workshops</a>
       </div>
       <nav class="main-navigation">
         <ul>
@@ -260,8 +21,8 @@
           <li><a href="/businessblueprint/business-blueprint.html">Business Blueprint</a></li>
           <li><a href="/businessblueprint/schedule.html">Workshop Schedule</a></li>
           <li><a href="/businessblueprint/curriculum.html">Curriculum</a></li>
-          <li><a href="/businessblueprint/register.html" class="active">Register</a></li>
-          </ul>
+          <li><a href="/businessblueprint/register.html">Register</a></li>
+        </ul>
       </nav>
       <button class="mobile-menu-toggle">
         <span class="sr-only">Menu</span>
@@ -271,143 +32,125 @@
   </header>
 
   <main>
+    <!-- Page Header -->
     <section class="page-header">
       <div class="container">
-        <h1>Register for Business Blueprint</h1>
-        <p>Secure your spot in our upcoming cohort starting May 27, 2025.</p>
+        <h1>About the Program</h1>
+        <p>A comprehensive approach to executive development</p>
       </div>
     </section>
 
-    <div class="container registration-container">
+    <!-- Program Overview -->
+    <section class="about-overview">
+      <div class="container">
+        <div class="about-content">
+          <h2>The Executive Discovery Workshops</h2>
+          <p>The Executive Discovery Workshops is a comprehensive 3-tiered online training program designed to transform participants from aspiring potential business owners into successful executives. Each stage of our program builds upon the previous one, ensuring that participants develop both the mindset and skills required to run a successful company.</p>
 
-      <div class="registration-form">
-        <h2 class="form-title">Secure Your Spot</h2>
+          <p>Our approach is structured into three distinct stages, each with a unique focus, curriculum, and outcome:</p>
 
-        <p style="font-size: var(--font-size-sm); color: var(--neutral-600); margin-bottom: var(--space-lg);"> Complete the form below to register for the Business Blueprint program. After submission, you'll be shown payment options to confirm your registration.
-        </p>
-
-        <div id="successMessage" class="message success-message" style="display: none;">
-          Your registration details have been received. Please complete the payment below to finalize your enrollment.
-        </div>
-
-        <div id="errorMessage" class="message error-message" style="display: none;">
-          There was an error. Please check your details or try again later.
-        </div>
-
-        <div id="emailErrorMessage" class="message error-message" style="display: none;">
-          Payment successful, but we encountered an issue sending the confirmation email. Please contact support. Your registration is confirmed.
-        </div>
-
-        <form id="registrationForm">
-          <h3>Personal Information</h3>
-          <div class="form-group">
-            <label for="fullName">Full Name <span class="required">*</span></label>
-            <input type="text" id="fullName" name="fullName" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email Address <span class="required">*</span></label>
-            <input type="email" id="email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone Number <span class="required">*</span></label>
-            <input type="tel" id="phone" name="phone" required>
-          </div>
-          <div class="form-group">
-            <label for="address">Home Address <span class="required">*</span></label>
-            <textarea id="address" name="address" rows="3" required></textarea>
-          </div>
-
-          <h3>Business Information</h3>
-          <div class="form-group">
-            <label for="businessExperience">Business Experience Level <span class="required">*</span></label>
-            <select id="businessExperience" name="businessExperience" required>
-              <option value="">Select your experience level</option>
-              <option value="No experience">No experience</option>
-              <option value="Some experience">Some experience (less than 2 years)</option>
-              <option value="Experienced">Experienced (2-5 years)</option>
-              <option value="Very experienced">Very experienced (5+ years)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="businessDescription">Describe Your Business, If You Have One. If Not, Describe Your Job, and Business Ideas <span class="required">*</span></label>
-            <textarea id="businessDescription" name="businessDescription" rows="4" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="businessGoals">Main Goals for the Program <span class="required">*</span></label>
-            <textarea id="businessGoals" name="businessGoals" rows="4" required></textarea>
-          </div>
-
-          <h3>Referral Information</h3>
-          <div class="form-group">
-              <label for="referralSource">How did you hear about us? <span class="required">*</span></label>
-              <select id="referralSource" name="referralSource" required>
-                  <option value="">-- Select an option --</option>
-                  <option value="Social Media (LinkedIn, Facebook, etc.)">Social Media (LinkedIn, Facebook, etc.)</option>
-                  <option value="Friend or Colleague">Friend or Colleague</option>
-                  <option value="Search Engine (Google, Bing, etc.)">Search Engine (Google, Bing, etc.)</option>
-                  <option value="Online Advertisement">Online Advertisement</option>
-                  <option value="Email Newsletter">Email Newsletter</option>
-                  <option value="Event or Workshop">Event or Workshop</option>
-                  <option value="Other">Other</option>
-              </select>
-          </div>
-          <div class="form-group">
-              <label for="referralName">Referred by (Name, if applicable):</label>
-              <input type="text" id="referralName" name="referralName" placeholder="Enter name if referred by someone">
-          </div>
-
-          <h3>Payment Options</h3>
-          <p style="font-size: var(--font-size-sm); color: var(--neutral-600); margin-bottom: var(--space-md);">Select your preferred payment option:</p>
-          <div class="payment-options-container">
-            <div class="radio-option">
-              <input type="radio" id="oneTimePayment" name="paymentOption" value="onetime" checked>
-              <label for="oneTimePayment">One-time payment ($600 CAD)</label>
+          <div class="program-path">
+            <div class="path-step active">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3>The Business Blueprint</h3>
+                <p><strong>Duration:</strong> 8 Weeks (Weekly Sessions)</p>
+                <p><strong>Instructor:</strong> Danny Silver</p>
+                <p>This foundational training focuses on developing the mindset and skills of a business owner. Participants will learn the basics of entrepreneurship, discovering that they can make businesses, and uncover the kinds of business possibilities they can work to accomplish.</p>
+              </div>
             </div>
-            <div class="radio-option">
-              <input type="radio" id="monthlyPayment" name="paymentOption" value="monthly">
-              <label for="monthlyPayment">Monthly payments (2 x $300 CAD)</label>
+
+            <div class="path-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3>The Executive Structure</h3>
+                <p><strong>Duration:</strong> 3 Months (Bi-weekly Sessions)</p>
+                <p><strong>Instructor:</strong> Justin Grossman</p>
+                <p>This training advances the participant's skills, diving into deeper operational and strategic areas. It is designed for those who have a basic business, or the basic framework for one, and want to scale it to a professional, sustainable enterprise.</p>
+              </div>
+            </div>
+
+            <div class="path-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3>The Executive Mastery</h3>
+                <p><strong>Duration:</strong> 6 Months (Monthly Sessions)</p>
+                <p><strong>Instructor:</strong> Robert Chun</p>
+                <p>This final stage is for participants who have mastered the basics and are ready to lead at the highest levels. The training focuses on advanced executive decision-making, leadership in complex environments, and creating a legacy through strategic impact.</p>
+              </div>
             </div>
           </div>
-
-          <button type="submit" id="submitButton" class="btn btn-primary">
-              Proceed to Payment
-          </button>
-        </form>
-
-        <div id="paymentOptions" class="payment-options">
-          <h3>Complete Your Registration</h3>
-          <p>To secure your spot in the Business Blueprint program, please complete your payment using the PayPal button below.</p>
-          <div id="paypalButtonContainer">
-             </div>
         </div>
       </div>
+    </section>
 
-      <div class="registration-details">
-        <h3>Program Details</h3>
-        <div class="detail-item">
-          <h4><i class="fas fa-calendar-alt fa-fw"></i> Program Dates</h4>
-          <p>May 27 - July 15, 2025</p>
-          <p>8 weekly sessions held every Tuesday at 7:30 PM EST</p>
+    <!-- Program Connection -->
+    <section class="program-connection">
+      <div class="container">
+        <h2 class="section-title">How the Workshops are Linked</h2>
+        <div class="connection-content">
+          <p>Each of the three training phases is designed to progressively build on the previous one, ensuring a natural transition from "running a business might be cool," to full executive development. The workshops are not isolated experiences but a continuous journey:</p>
+
+          <ul class="connection-list">
+            <li>
+              <span>The Business Blueprint provides the foundation, teaching participants the basics of ownership and business management.</span>
+            </li>
+            <li>
+              <span>The Executive Structure builds on that foundation, offering intermediate skills to scale businesses effectively.</span>
+            </li>
+            <li>
+              <span>The Executive Mastery is reserved for those who wish to lead at the highest levels, focusing on advanced executive skills and global business strategy.</span>
+            </li>
+          </ul>
+
+          <p>This ensures that participants are not overwhelmed but are steadily prepared to take on more complex challenges as they advance through the stages. As each training is distinct yet interconnected, participants can choose to progress from one level to the next based on their career goals, or strengthen the level they are in, helping them grow into well-rounded, capable business leaders.</p>
         </div>
-        <div class="detail-item">
-          <h4><i class="fas fa-dollar-sign fa-fw"></i> Investment</h4>
-          <p><strong>$600 CAD</strong> total (one-time)</p>
-          <p>or <strong>2 payments of $300 CAD</strong> (monthly)</p>
-          <p>Includes all course materials, session recordings, templates, and access to our private community forum.</p>
-        </div>
-        <div class="detail-item">
-          <h4><i class="fas fa-user-friends fa-fw"></i> Limited Capacity</h4>
-          <p>We limit each cohort to 25 participants to ensure personalized attention and feedback.</p>
-          <p><strong>Spots remaining: 7</strong> (Example)</p>
-        </div>
-        <div class="detail-item">
-          <h4><i class="fas fa-question-circle fa-fw"></i> Have Questions?</h4>
-          <p>Contact us at <a href="mailto:info@executivediscovery.com">info@executivediscovery.com</a> or call <a href="tel:5551234567">(555) 123-4567</a> to speak with our team.</p>
-        </div>
-        <a href="/businessblueprint/business-blueprint.html" class="btn btn-secondary" style="display: block; width: 100%; margin-top: var(--space-lg);">Learn More About the Program</a>
       </div>
+    </section>
 
-    </div>
+    <!-- Our Approach -->
+    <section class="our-approach">
+      <div class="container">
+        <h2 class="section-title">Our Teaching Approach</h2>
+        <div class="approach-grid">
+          <div class="approach-item">
+            <i class="fas fa-user-tie fa-2x" style="color: var(--primary-accent); margin-bottom: var(--space-md);"></i>
+            <h3>Expert Instructors</h3>
+            <p>Each level of our program is led by an instructor with proven expertise in their specific area of business development and leadership.</p>
+          </div>
+
+          <div class="approach-item">
+            <i class="fas fa-users fa-2x" style="color: var(--primary-accent); margin-bottom: var(--space-md);"></i>
+            <h3>Collaborative Learning</h3>
+            <p>Our workshops feature interactive team activities where participants can share insights, provide feedback, and learn from each other's experiences.</p>
+          </div>
+
+          <div class="approach-item">
+            <i class="fas fa-book fa-2x" style="color: var(--primary-accent); margin-bottom: var(--space-md);"></i>
+            <h3>Comprehensive Materials</h3>
+            <p>Each session comes with detailed resources including PDFs, slide decks, worksheets, templates, and instructional videos.</p>
+          </div>
+
+          <div class="approach-item">
+            <i class="fas fa-clipboard-check fa-2x" style="color: var(--primary-accent); margin-bottom: var(--space-md);"></i>
+            <h3>Applied Learning</h3>
+            <p>Participants apply what they learn through practical homework assignments that directly relate to their business goals.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <div class="container">
+        <h2>Start Your Executive Journey Today</h2>
+        <p>Join our next Business Blueprint cohort starting May 13, 2025 and take the first step on your journey to executive success.</p>
+        <div class="cta-buttons">
+          <a class="btn btn-secondary btn-large" href="/businessblueprint/business-blueprint.html">Learn About Level 1</a>
+          <a class="btn btn-primary btn-large" href="/businessblueprint/register.html">Register Now</a>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -420,12 +163,12 @@
         <div class="footer-links">
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="/businessblueprint/">Home</a></li>
-            <li><a href="/businessblueprint/about.html">About the Program</a></li>
-            <li><a href="/businessblueprint/business-blueprint.html">Business Blueprint</a></li>
-            <li><a href="/businessblueprint/schedule.html">Workshop Schedule</a></li>
-            <li><a href="/businessblueprint/curriculum.html">Curriculum</a></li>
-            <li><a href="/businessblueprint/register.html">Register</a></li>
+             <li><a href="/businessblueprint/">Home</a></li>
+          <li><a href="/businessblueprint/about.html">About the Program</a></li>
+          <li><a href="/businessblueprint/business-blueprint.html">Business Blueprint</a></li>
+          <li><a href="/businessblueprint/schedule.html">Workshop Schedule</a></li>
+          <li><a href="/businessblueprint/curriculum.html">Curriculum</a></li>
+          <li><a href="/businessblueprint/register.html">Register</a></li>
           </ul>
         </div>
         <div class="footer-contact">
@@ -433,186 +176,24 @@
           <p><i class="fas fa-envelope"></i> info@executivediscovery.com</p>
           <p><i class="fas fa-phone"></i> (555) 123-4567</p>
           <div class="social-links">
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 Executive Discovery Workshops. All Rights Reserved.</p>
+        <p>© 2025 Executive Discovery Workshops. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
 
   <script>
-    // --- Configuration ---
-    const EMAILJS_SERVICE_ID = 'service_lnrg1h1';
-    const EMAILJS_TEMPLATE_ID = 'template_aehp1ev';
-    const EMAILJS_PUBLIC_KEY = 'QzPU4nIsl3TTDh4xn';
-    const PAYPAL_PLAN_ID_ONETIME = 'P-2Y9180536W353780GM72T6WQ';
-    const PAYPAL_PLAN_ID_MONTHLY = 'P-75L54121H53220933M72SWBQ';
-    const THANK_YOU_PAGE_URL = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
-
-    // --- Element References ---
-    const registrationForm = document.getElementById('registrationForm');
-    const successMessage = document.getElementById('successMessage');
-    const errorMessage = document.getElementById('errorMessage');
-    const emailErrorMessage = document.getElementById('emailErrorMessage');
-    const paymentOptionsDiv = document.getElementById('paymentOptions');
-    const paypalButtonContainer = document.getElementById('paypalButtonContainer');
-    const paymentOptionRadios = document.querySelectorAll('input[name="paymentOption"]');
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const siteHeader = document.querySelector('.site-header'); // Target the header itself
-
-    // --- State Variable ---
-    let registrationData = null; // To store form data after submission
-
-    // --- Initialize EmailJS ---
-    (function(){
-        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-    })();
-
-    // --- Functions ---
-
-    /**
-     * Sends registration data using EmailJS.
-     */
-    function sendRegistrationEmail() {
-      if (!registrationData) {
-        console.error('No registration data available to send.');
-        errorMessage.textContent = 'An unexpected error occurred. Could not send confirmation email.';
-        errorMessage.style.display = 'block';
-        window.location.href = THANK_YOU_PAGE_URL;
-        return;
-      }
-
-      const selectedOption = document.querySelector('input[name="paymentOption"]:checked');
-      // Get the text from the label associated with the checked radio
-      const selectedLabel = selectedOption ? selectedOption.nextElementSibling.textContent : 'Not specified';
-      registrationData.paymentOption = selectedLabel.trim(); // Add trimmed label text
-
-      console.log('Sending email with data:', registrationData);
-
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, registrationData)
-        .then(function(response) {
-           console.log('EmailJS SUCCESS!', response.status, response.text);
-           window.location.href = THANK_YOU_PAGE_URL;
-        }, function(error) {
-           console.error('EmailJS FAILED...', error);
-           emailErrorMessage.style.display = 'block';
-           setTimeout(() => {
-               window.location.href = THANK_YOU_PAGE_URL;
-           }, 3000);
-        });
-    }
-
-    /**
-     * Renders the appropriate PayPal button based on the selected payment option.
-     */
-    function renderPayPalButton() {
-        const selectedOption = document.querySelector('input[name="paymentOption"]:checked').value;
-        const planId = selectedOption === 'onetime' ? PAYPAL_PLAN_ID_ONETIME : PAYPAL_PLAN_ID_MONTHLY;
-        const buttonLabel = selectedOption === 'onetime' ? 'paypal' : 'subscribe';
-
-        console.log(`Rendering PayPal button for plan: ${planId} (Option: ${selectedOption})`);
-        paypalButtonContainer.innerHTML = ''; // Clear previous button
-
-        try {
-            paypal.Buttons({
-                style: {
-                    shape: 'rect',
-                    color: 'gold',
-                    layout: 'vertical',
-                    label: buttonLabel,
-                    tagline: false
-                },
-                createSubscription: function(data, actions) {
-                    console.log('Creating subscription for plan ID:', planId);
-                    return actions.subscription.create({ plan_id: planId });
-                },
-                onApprove: function(data, actions) {
-                    console.log('PayPal payment approved:', data);
-                    paypalButtonContainer.innerHTML = '<p>Payment processing, please wait...</p>'; // Simple processing message
-                    sendRegistrationEmail();
-                },
-                onError: function (err) {
-                    console.error('PayPal Button Error:', err);
-                    errorMessage.textContent = 'An error occurred with the PayPal payment. Please try again or contact support.';
-                    errorMessage.style.display = 'block';
-                    renderPayPalButton(); // Attempt to re-render
-                },
-                onCancel: function (data) {
-                    console.log('PayPal payment cancelled:', data);
-                }
-            }).render('#paypalButtonContainer');
-        } catch (error) {
-            console.error("Error rendering PayPal button: ", error);
-            paypalButtonContainer.innerHTML = '<p class="message error-message">Error loading payment options. Please refresh the page or contact support.</p>';
-        }
-    }
-
-    // --- Event Listeners ---
-
-    // Mobile Menu Toggle - Corrected to match about.html logic
-    if (mobileMenuToggle && siteHeader) {
-        mobileMenuToggle.addEventListener('click', function() {
-            siteHeader.classList.toggle('menu-open'); // Toggle class on the header
-        });
-    } else {
-        console.warn('Mobile menu toggle button or site header element not found.');
-    }
-
-
-    // Form Submission Handler
-    registrationForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      // Hide messages on new submission attempt
-      successMessage.style.display = 'none';
-      errorMessage.style.display = 'none';
-      emailErrorMessage.style.display = 'none';
-
-      if (!this.checkValidity()) {
-        const firstInvalidField = this.querySelector(':invalid');
-        if (firstInvalidField) {
-            firstInvalidField.focus();
-        }
-        this.reportValidity();
-        return;
-      }
-
-      // Gather form data
-      const formData = new FormData(this);
-      registrationData = {};
-      formData.forEach((value, key) => {
-          registrationData[key] = value;
-      });
-      console.log('Form data captured:', registrationData);
-
-      // Update UI
-      this.style.display = 'none';
-      successMessage.style.display = 'block';
-      paymentOptionsDiv.style.display = 'block';
-
-      // Render PayPal button
-      renderPayPalButton();
-
-      // Scroll to payment section
-      paymentOptionsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Mobile Menu Toggle
+    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+      document.querySelector('.site-header').classList.toggle('menu-open');
     });
-
-    // Update PayPal button if the payment option changes *after* the form is submitted
-    paymentOptionRadios.forEach(radio => {
-      radio.addEventListener('change', function() {
-        if (paymentOptionsDiv.style.display === 'block') {
-          console.log('Payment option changed, re-rendering PayPal button.');
-          renderPayPalButton();
-        }
-      });
-    });
-
   </script>
 </body>
 </html>
