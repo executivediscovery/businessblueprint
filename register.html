@@ -8,27 +8,33 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <script src="https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <style>
     /* Custom styles for registration page */
     .registration-container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: start;
+      grid-template-columns: 1fr 1fr; /* Two columns */
+      gap: 2rem; /* Spacing between columns */
+      align-items: start; /* Align items to the top */
     }
 
     .registration-form {
-      background-color: #f5f5f5;
+      background-color: #f5f5f5; /* Light gray background */
       padding: 1.5rem;
-      border-radius: 0.375rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border-radius: 0.375rem; /* Rounded corners */
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
     }
 
-    /* Radio button fixes */
+    /* Radio button container styling */
     .payment-options-container {
       margin-top: 1.5rem;
     }
 
+    /* Individual radio button option styling */
     .radio-option {
       display: flex;
       align-items: center;
@@ -39,14 +45,14 @@
       margin-right: 0.5rem;
       width: 16px;
       height: 16px;
-      flex-shrink: 0;
+      flex-shrink: 0; /* Prevent shrinking */
     }
 
     .radio-option label {
-      margin-bottom: 0;
+      margin-bottom: 0; /* Reset default margin */
     }
 
-    /* Form styles */
+    /* Form group styling */
     .form-group {
       margin-bottom: 1.5rem;
     }
@@ -54,14 +60,16 @@
     .form-group label {
       display: block;
       margin-bottom: 0.5rem;
-      font-weight: 500;
+      font-weight: 500; /* Medium font weight */
     }
 
+    /* Required field indicator */
     .required {
-      color: #e53e3e;
+      color: #e53e3e; /* Red color */
       margin-left: 0.25rem;
     }
 
+    /* Input, select, textarea styling */
     input[type="text"],
     input[type="email"],
     input[type="tel"],
@@ -69,60 +77,107 @@
     textarea {
       width: 100%;
       padding: 0.75rem;
-      border: 1px solid #cbd5e0;
-      border-radius: 0.375rem;
+      border: 1px solid #cbd5e0; /* Gray border */
+      border-radius: 0.375rem; /* Rounded corners */
       margin-top: 0.25rem;
       font-size: 1rem;
     }
 
-    button {
-      background-color: #2b6cb0;
+    /* Submit button styling */
+    button[type="submit"] {
+      background-color: #2b6cb0; /* Blue background */
       color: white;
-      font-weight: 600;
+      font-weight: 600; /* Semi-bold */
       padding: 0.75rem 1.5rem;
       border: none;
-      border-radius: 0.375rem;
+      border-radius: 0.375rem; /* Rounded corners */
       cursor: pointer;
       font-size: 1rem;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s; /* Smooth transition */
       width: 100%;
     }
 
-    button:hover {
-      background-color: #2c5282;
+    button[type="submit"]:hover {
+      background-color: #2c5282; /* Darker blue on hover */
     }
 
-    /* Payment options */
+    /* Payment options section styling */
     .payment-options {
-      display: none;
+      display: none; /* Hidden by default */
       margin-top: 2rem;
       padding: 1.5rem;
-      border: 1px solid #cbd5e0;
-      border-radius: 0.5rem;
-      background-color: #f7fafc;
+      border: 1px solid #cbd5e0; /* Gray border */
+      border-radius: 0.5rem; /* Slightly larger radius */
+      background-color: #f7fafc; /* Very light gray background */
     }
 
-    .paypal-button {
-      display: inline-block;
-      background-color: #0070ba;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.375rem;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 1rem;
-      text-align: center;
+    /* Message styling (Success/Error) */
+    .success-message, .error-message {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.375rem;
+        font-weight: 500;
+    }
+    .success-message {
+        background-color: #c6f6d5; /* Light green */
+        color: #2f855a; /* Dark green */
+        border: 1px solid #9ae6b4;
+    }
+    .error-message {
+        background-color: #fed7d7; /* Light red */
+        color: #c53030; /* Dark red */
+        border: 1px solid #feb2b2;
     }
 
-    .paypal-button:hover {
-      background-color: #005ea6;
-    }
-
+    /* Responsive design for smaller screens */
     @media (max-width: 768px) {
       .registration-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Stack columns */
       }
     }
+
+    /* Ensure PayPal buttons render correctly */
+    #paypalButtonContainer {
+        margin-top: 1rem;
+        min-height: 50px; /* Prevent layout shift while buttons load */
+    }
+
+    /* Basic styles from styles.css if needed for header/footer */
+    .site-header { background-color: #fff; border-bottom: 1px solid #eee; padding: 1rem 0; }
+    .site-header .container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .site-header .logo a { font-weight: bold; text-decoration: none; color: #333; font-size: 1.5rem; }
+    .site-header .main-navigation ul { list-style: none; padding: 0; margin: 0; display: flex; }
+    .site-header .main-navigation li { margin-left: 1.5rem; }
+    .site-header .main-navigation a { text-decoration: none; color: #555; }
+    .site-header .mobile-menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+    @media (max-width: 768px) {
+        .site-header .main-navigation { display: none; }
+        .site-header .mobile-menu-toggle { display: block; }
+        .site-header.menu-open .main-navigation { display: block; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-top: 1px solid #eee; padding: 1rem; }
+        .site-header.menu-open .main-navigation ul { flex-direction: column; }
+        .site-header.menu-open .main-navigation li { margin: 0.5rem 0; }
+    }
+    .page-header { background-color: #f0f4f8; padding: 2rem 0; text-align: center; margin-bottom: 2rem; }
+    .page-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .registration-details h3 { font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; }
+    .detail-item { margin-bottom: 1.5rem; }
+    .detail-item h4 { font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; }
+    .detail-item h4 i { margin-right: 0.5rem; color: #2b6cb0; }
+    .detail-item p { margin-bottom: 0.25rem; color: #555; }
+    .detail-item strong { color: #333; }
+    .btn { display: inline-block; background-color: #2b6cb0; color: white; padding: 0.75rem 1.5rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600; text-align: center; transition: background-color 0.3s; }
+    .btn:hover { background-color: #2c5282; }
+    .site-footer { background-color: #333; color: #ccc; padding: 2rem 0; margin-top: 3rem; }
+    .site-footer .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .site-footer .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+    .site-footer h3, .site-footer h4 { color: #fff; margin-bottom: 1rem; }
+    .site-footer ul { list-style: none; padding: 0; }
+    .site-footer li { margin-bottom: 0.5rem; }
+    .site-footer a { color: #ccc; text-decoration: none; }
+    .site-footer a:hover { color: #fff; }
+    .site-footer .social-links a { margin-right: 1rem; font-size: 1.2rem; }
+    .site-footer .footer-bottom { text-align: center; border-top: 1px solid #555; padding-top: 1rem; margin-top: 1rem; font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -158,23 +213,26 @@
 
     <div class="container registration-container">
       <div class="registration-form">
-        <h1 class="text-center">Secure Your Spot</h1>
+        <h2 class="text-2xl font-semibold text-center mb-4">Secure Your Spot</h2>
         
-        <p class="mb-6">
-          Complete the form below to register for the Business Blueprint program. After submission, you'll be directed to payment options to confirm your registration.
+        <p class="mb-6 text-gray-700">
+          Complete the form below to register for the Business Blueprint program. After submission, you'll be shown payment options to confirm your registration.
         </p>
         
         <div id="successMessage" class="success-message" style="display: none;">
-          Your registration has been submitted successfully. Please proceed to payment.
+          Your registration details have been received. Please complete the payment below to finalize your enrollment.
         </div>
         
         <div id="errorMessage" class="error-message" style="display: none;">
-          There was an error processing your registration. Please try again.
+          There was an error. Please check your details or try again later.
         </div>
-        
+
+        <div id="emailErrorMessage" class="error-message" style="display: none;">
+          Payment successful, but we encountered an issue sending the confirmation email. Please contact support. Your registration is confirmed.
+        </div>
+
         <form id="registrationForm">
-          <!-- Personal Information -->
-          <h2>Personal Information</h2>
+          <h3 class="text-xl font-semibold mb-4 border-b pb-2">Personal Information</h3>
           
           <div class="form-group">
             <label for="fullName">Full Name <span class="required">*</span></label>
@@ -196,8 +254,7 @@
             <textarea id="address" name="address" rows="3" required></textarea>
           </div>
           
-          <!-- Business Information -->
-          <h2>Business Information</h2>
+          <h3 class="text-xl font-semibold my-4 border-b pb-2">Business Information</h3>
           
           <div class="form-group">
             <label for="businessExperience">Business Experience Level <span class="required">*</span></label>
@@ -219,10 +276,30 @@
             <label for="businessGoals">Main Goals for the Program <span class="required">*</span></label>
             <textarea id="businessGoals" name="businessGoals" rows="4" required></textarea>
           </div>
+
+          <h3 class="text-xl font-semibold my-4 border-b pb-2">Referral Information</h3>
+
+          <div class="form-group">
+              <label for="referralSource">How did you hear about us? <span class="required">*</span></label>
+              <select id="referralSource" name="referralSource" required>
+                  <option value="">-- Select an option --</option>
+                  <option value="Social Media (LinkedIn, Facebook, etc.)">Social Media (LinkedIn, Facebook, etc.)</option>
+                  <option value="Friend or Colleague">Friend or Colleague</option>
+                  <option value="Search Engine (Google, Bing, etc.)">Search Engine (Google, Bing, etc.)</option>
+                  <option value="Online Advertisement">Online Advertisement</option>
+                  <option value="Email Newsletter">Email Newsletter</option>
+                  <option value="Event or Workshop">Event or Workshop</option>
+                  <option value="Other">Other</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="referralName">Referred by (Name, if applicable):</label>
+              <input type="text" id="referralName" name="referralName" placeholder="Enter name if referred by someone">
+          </div>
           
-          <!-- Payment Options -->
-          <h2>Payment Options</h2>
-          <p>Select your preferred payment option:</p>
+          <h3 class="text-xl font-semibold my-4 border-b pb-2">Payment Options</h3>
+          <p class="mb-2 text-gray-700">Select your preferred payment option:</p>
           
           <div class="payment-options-container">
             <div class="radio-option">
@@ -235,18 +312,19 @@
             </div>
           </div>
           
-          <button type="submit" id="submitButton">Register Now</button>
+          <button type="submit" id="submitButton" class="mt-6">Proceed to Payment</button>
         </form>
         
         <div id="paymentOptions" class="payment-options">
-          <h3>Complete Your Registration</h3>
-          <p>To secure your spot in the Business Blueprint program, please complete your payment by clicking the button below.</p>
-          <div id="paypalButtonContainer"></div>
+          <h3 class="text-xl font-semibold mb-2">Complete Your Registration</h3>
+          <p class="mb-4 text-gray-700">To secure your spot in the Business Blueprint program, please complete your payment using the PayPal button below.</p>
+          <div id="paypalButtonContainer">
+             </div>
         </div>
       </div>
       
-      <div class="registration-details">
-        <h3>Program Details</h3>
+      <div class="registration-details bg-gray-100 p-6 rounded-lg shadow-sm">
+        <h3 class="text-xl font-semibold mb-4 border-b pb-2">Program Details</h3>
 
         <div class="detail-item">
           <h4><i class="fas fa-calendar-alt"></i> Program Dates</h4>
@@ -256,22 +334,23 @@
 
         <div class="detail-item">
           <h4><i class="fas fa-dollar-sign"></i> Investment</h4>
-          <p><strong>$600 CAD</strong> total (or $300 CAD monthly)</p>
+          <p><strong>$600 CAD</strong> total (one-time)</p>
+          <p>or <strong>2 payments of $300 CAD</strong> (monthly)</p>
           <p>Includes all course materials, session recordings, templates, and access to our private community forum.</p>
         </div>
 
         <div class="detail-item">
           <h4><i class="fas fa-user-friends"></i> Limited Capacity</h4>
           <p>We limit each cohort to 25 participants to ensure personalized attention and feedback.</p>
-          <p><strong>Spots remaining: 7</strong></p>
+          <p><strong>Spots remaining: 7</strong> (Example - update as needed)</p>
         </div>
 
         <div class="detail-item">
           <h4><i class="fas fa-question-circle"></i> Have Questions?</h4>
-          <p>Contact us at <a href="mailto:info@executivediscovery.com">info@executivediscovery.com</a> or call <a href="tel:5551234567">(555) 123-4567</a> to speak with our team.</p>
+          <p>Contact us at <a href="mailto:info@executivediscovery.com" class="text-blue-600 hover:underline">info@executivediscovery.com</a> or call <a href="tel:5551234567" class="text-blue-600 hover:underline">(555) 123-4567</a> to speak with our team.</p>
         </div>
 
-        <a href="/businessblueprint/business-blueprint.html" class="btn" style="width: 100%;">Learn More About the Program</a>
+        <a href="/businessblueprint/business-blueprint.html" class="btn mt-4 w-full">Learn More About the Program</a>
       </div>
     </div>
   </main>
@@ -291,6 +370,7 @@
             <li><a href="/businessblueprint/business-blueprint.html">Business Blueprint</a></li>
             <li><a href="/businessblueprint/schedule.html">Workshop Schedule</a></li>
             <li><a href="/businessblueprint/curriculum.html">Curriculum</a></li>
+             <li><a href="/businessblueprint/register.html">Register</a></li>
           </ul>
         </div>
         <div class="footer-contact">
@@ -312,51 +392,196 @@
   </footer>
 
   <script>
-    // Mobile Menu Toggle
-    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
-      document.querySelector('.site-header').classList.toggle('menu-open');
-    });
+    // --- Configuration ---
+    const EMAILJS_SERVICE_ID = 'service_lnrg1h1';
+    const EMAILJS_TEMPLATE_ID = 'template_aehp1ev';
+    const EMAILJS_PUBLIC_KEY = 'QzPU4nIsl3TTDh4xn';
+    const PAYPAL_PLAN_ID_ONETIME = 'P-2Y9180536W353780GM72T6WQ';
+    const PAYPAL_PLAN_ID_MONTHLY = 'P-75L54121H53220933M72SWBQ';
+    const THANK_YOU_PAGE_URL = 'https://executivediscovery.github.io/businessblueprint/thankyou.html';
 
-    // Form submission handling
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Validate form
-      if (!this.checkValidity()) {
-        this.reportValidity();
+    // --- Element References ---
+    const registrationForm = document.getElementById('registrationForm');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    const emailErrorMessage = document.getElementById('emailErrorMessage');
+    const paymentOptionsDiv = document.getElementById('paymentOptions');
+    const paypalButtonContainer = document.getElementById('paypalButtonContainer');
+    const paymentOptionRadios = document.querySelectorAll('input[name="paymentOption"]');
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const siteHeader = document.querySelector('.site-header');
+
+    // --- State Variable ---
+    let registrationData = null; // To store form data after submission
+
+    // --- Initialize EmailJS ---
+    (function(){
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    })();
+
+    // --- Functions ---
+
+    /**
+     * Sends registration data using EmailJS.
+     */
+    function sendRegistrationEmail() {
+      if (!registrationData) {
+        console.error('No registration data available to send.');
+        // Show general error, although this shouldn't happen in normal flow
+        errorMessage.textContent = 'An unexpected error occurred. Could not send confirmation email.';
+        errorMessage.style.display = 'block';
+        // Still redirect, payment was successful
+        window.location.href = THANK_YOU_PAGE_URL;
         return;
       }
 
-      // Hide form, show success and payment options
-      this.style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
-      document.getElementById('paymentOptions').style.display = 'block';
-      
-      // Update PayPal button
-      updatePaypalButton();
-      
-      // Scroll to payment options
-      document.getElementById('paymentOptions').scrollIntoView({ behavior: 'smooth' });
-    });
+      // Add the selected payment option to the data being sent
+      // Note: referralSource and referralName are already included
+      // because they were part of the form data captured earlier.
+      const selectedOption = document.querySelector('input[name="paymentOption"]:checked');
+      registrationData.paymentOption = selectedOption ? selectedOption.labels[0].innerText : 'Not specified';
 
-    // Update PayPal button based on selection
-    function updatePaypalButton() {
-      const paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
-      const paypalButtonContainer = document.getElementById('paypalButtonContainer');
-      
-      paypalButtonContainer.innerHTML = paymentOption === 'onetime' 
-        ? '<a href="YOUR_ONE_TIME_PAYMENT_LINK" class="paypal-button">Pay $600 CAD Now</a>'
-        : '<a href="YOUR_MONTHLY_PAYMENT_LINK" class="paypal-button">Set Up Monthly Payments ($300 CAD)</a>';
+      console.log('Sending email with data:', registrationData); // Log data being sent
+
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, registrationData)
+        .then(function(response) {
+           console.log('EmailJS SUCCESS!', response.status, response.text);
+           // Email sent successfully, redirect to thank you page
+           window.location.href = THANK_YOU_PAGE_URL;
+        }, function(error) {
+           console.error('EmailJS FAILED...', error);
+           // Show specific email error message
+           emailErrorMessage.style.display = 'block';
+           // Still redirect to thank you page as payment was successful
+           // Add a small delay so the user might see the message
+           setTimeout(() => {
+               window.location.href = THANK_YOU_PAGE_URL;
+           }, 3000); // 3 second delay
+        });
     }
 
-    // Update payment options when selection changes
-    document.querySelectorAll('input[name="paymentOption"]').forEach(radio => {
+    /**
+     * Renders the appropriate PayPal button based on the selected payment option.
+     */
+    function renderPayPalButton() {
+        const selectedOption = document.querySelector('input[name="paymentOption"]:checked').value;
+        const planId = selectedOption === 'onetime' ? PAYPAL_PLAN_ID_ONETIME : PAYPAL_PLAN_ID_MONTHLY;
+        const buttonLabel = selectedOption === 'onetime' ? 'paypal' : 'subscribe'; // Use 'paypal' for one-time, 'subscribe' for subscription
+
+        console.log(`Rendering PayPal button for plan: ${planId} (Option: ${selectedOption})`);
+
+        // Clear previous button if any
+        paypalButtonContainer.innerHTML = '';
+
+        // Render the new button
+        try {
+            paypal.Buttons({
+                style: {
+                    shape: 'rect',
+                    color: 'gold',
+                    layout: 'vertical',
+                    label: buttonLabel // Dynamic label
+                },
+                createSubscription: function(data, actions) {
+                    console.log('Creating subscription for plan ID:', planId);
+                    return actions.subscription.create({
+                        /* Creates the subscription */
+                        plan_id: planId
+                    });
+                },
+                onApprove: function(data, actions) {
+                    console.log('PayPal payment approved:', data);
+                    // Disable the PayPal button area to prevent double clicks
+                    paypalButtonContainer.innerHTML = '<p class="text-center font-semibold text-green-600">Payment processing...</p>';
+                    // Payment successful, now send the email
+                    sendRegistrationEmail();
+                    // Note: Redirection happens inside sendRegistrationEmail() after attempt
+                },
+                onError: function (err) {
+                    console.error('PayPal Button Error:', err);
+                    errorMessage.textContent = 'An error occurred with the PayPal payment. Please try again or contact support.';
+                    errorMessage.style.display = 'block';
+                    // Re-render the button in case it was a temporary issue
+                    renderPayPalButton();
+                },
+                onCancel: function (data) {
+                    console.log('PayPal payment cancelled:', data);
+                    // Optional: Show a message that payment was cancelled
+                }
+            }).render('#paypalButtonContainer'); // Renders the PayPal button
+        } catch (error) {
+            console.error("Error rendering PayPal button: ", error);
+            paypalButtonContainer.innerHTML = '<p class="text-red-600">Error loading payment options. Please refresh the page or contact support.</p>';
+        }
+    }
+
+    // --- Event Listeners ---
+
+    // Mobile Menu Toggle
+    if (mobileMenuToggle && siteHeader) {
+        mobileMenuToggle.addEventListener('click', function() {
+            siteHeader.classList.toggle('menu-open');
+        });
+    } else {
+        console.warn('Mobile menu toggle or site header element not found.');
+    }
+
+
+    // Form Submission Handler
+    registrationForm.addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent default form submission
+
+      // Clear previous messages
+      successMessage.style.display = 'none';
+      errorMessage.style.display = 'none';
+      emailErrorMessage.style.display = 'none';
+
+      // Validate form using HTML5 validation
+      if (!this.checkValidity()) {
+        // Find the first invalid field and focus it for better UX
+        const firstInvalidField = this.querySelector(':invalid');
+        if (firstInvalidField) {
+            firstInvalidField.focus();
+        }
+        this.reportValidity(); // Show browser validation messages
+        return;
+      }
+
+      // --- Form is valid, proceed ---
+
+      // 1. Gather form data
+      const formData = new FormData(this);
+      registrationData = {}; // Reset/initialize registrationData
+      // Convert FormData to a plain object suitable for EmailJS
+      formData.forEach((value, key) => {
+          registrationData[key] = value; // Assuming names match directly
+      });
+      console.log('Form data captured:', registrationData);
+
+
+      // 2. Update UI: Hide form, show success message and payment section
+      this.style.display = 'none'; // Hide the form itself
+      successMessage.style.display = 'block'; // Show confirmation message
+      paymentOptionsDiv.style.display = 'block'; // Show the payment section
+
+      // 3. Render the correct PayPal button
+      renderPayPalButton();
+
+      // 4. Scroll to payment options for better UX
+      paymentOptionsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // Update PayPal button if the payment option changes *after* the form is submitted
+    paymentOptionRadios.forEach(radio => {
       radio.addEventListener('change', function() {
-        if (document.getElementById('paymentOptions').style.display === 'block') {
-          updatePaypalButton();
+        // Only re-render if the payment section is already visible
+        if (paymentOptionsDiv.style.display === 'block') {
+          console.log('Payment option changed, re-rendering PayPal button.');
+          renderPayPalButton();
         }
       });
     });
+
   </script>
 </body>
 </html>
