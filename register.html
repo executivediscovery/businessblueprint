@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register | Executive Discovery Workshops</title>
   <meta name="description" content="Register for our Business Blueprint program starting May 27, 2025. Transform your entrepreneurial vision into reality with our comprehensive 8-week course.">
-  <!-- Add EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script>
-    // Initialize EmailJS with your User ID
-    (function() {
-      emailjs.init('YOUR_EMAILJS_USER_ID'); // Replace with your actual EmailJS user ID
-    })();
-  </script>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -247,18 +239,10 @@
         </form>
         
         <div id="paymentOptions" class="payment-options">
-            <h3>Complete Your Registration</h3>
-            <p>To secure your spot in the Business Blueprint program, please complete your payment using the button below.</p>
-            
-            <!-- PayPal Buttons Containers -->
-            <div id="fullPaymentContainer" style="display: none;">
-              <div id="paypal-button-container-P-2Y9180536W353780GM72T6WQ"></div>
-            </div>
-            
-            <div id="monthlyPaymentContainer" style="display: none;">
-              <div id="paypal-button-container-P-75L54121H53220933M72SWBQ"></div>
-            </div>
-          </div>
+          <h3>Complete Your Registration</h3>
+          <p>To secure your spot in the Business Blueprint program, please complete your payment by clicking the button below.</p>
+          <div id="paypalButtonContainer"></div>
+        </div>
       </div>
       
       <div class="registration-details">
@@ -327,112 +311,52 @@
     </div>
   </footer>
 
- <script>
-    // Updated Form Submission Handling with EmailJS
+  <script>
+    // Mobile Menu Toggle
+    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+      document.querySelector('.site-header').classList.toggle('menu-open');
+    });
+
+    // Form submission handling
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
+      // Validate form
       if (!this.checkValidity()) {
         this.reportValidity();
         return;
       }
 
-      // Prepare EmailJS parameters
-      const templateParams = {
-        fullName: document.getElementById('fullName').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        businessExperience: document.getElementById('businessExperience').value,
-        businessDescription: document.getElementById('businessDescription').value,
-        businessGoals: document.getElementById('businessGoals').value,
-        paymentOption: document.querySelector('input[name="paymentOption"]:checked').value
-      };
-
-      // Send email using EmailJS
-      emailjs.send('YOUR_EMAILJS_SERVICE_ID', 'YOUR_EMAILJS_TEMPLATE_ID', templateParams)
-        .then(() => {
-          // Hide form and show payment options
-          this.style.display = 'none';
-          document.getElementById('successMessage').style.display = 'block';
-          document.getElementById('paymentOptions').style.display = 'block';
-          loadPaypalButtons();
-          document.getElementById('paymentOptions').scrollIntoView({ behavior: 'smooth' });
-        })
-        .catch((error) => {
-          console.error('Email send failed:', error);
-          document.getElementById('errorMessage').style.display = 'block';
-        });
+      // Hide form, show success and payment options
+      this.style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+      document.getElementById('paymentOptions').style.display = 'block';
+      
+      // Update PayPal button
+      updatePaypalButton();
+      
+      // Scroll to payment options
+      document.getElementById('paymentOptions').scrollIntoView({ behavior: 'smooth' });
     });
 
-    // PayPal Integration
-    function loadPaypalButtons() {
+    // Update PayPal button based on selection
+    function updatePaypalButton() {
       const paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
+      const paypalButtonContainer = document.getElementById('paypalButtonContainer');
       
-      // Load PayPal SDK once
-      if (!document.querySelector('#paypal-sdk')) {
-        const script = document.createElement('script');
-        script.id = 'paypal-sdk';
-        script.src = 'https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription';
-        script.setAttribute('data-sdk-integration-source', 'button-factory');
-        document.body.appendChild(script);
-      }
-
-      // Clear existing buttons
-      document.querySelectorAll('.paypal-button').forEach(btn => btn.remove());
-
-      // Initialize appropriate button
-      if (paymentOption === 'onetime') {
-        document.getElementById('fullPaymentContainer').style.display = 'block';
-        document.getElementById('monthlyPaymentContainer').style.display = 'none';
-        
-        paypal.Buttons({
-          style: {
-            shape: 'rect',
-            color: 'gold',
-            layout: 'vertical',
-            label: 'paypal'
-          },
-          createSubscription: (data, actions) => actions.subscription.create({
-            plan_id: 'P-2Y9180536W353780GM72T6WQ'
-          }),
-          onApprove: (data) => {
-            alert(`Payment successful! Subscription ID: ${data.subscriptionID}`);
-            // You can add additional success handling here
-          }
-        }).render('#paypal-button-container-P-2Y9180536W353780GM72T6WQ');
-      } else {
-        document.getElementById('monthlyPaymentContainer').style.display = 'block';
-        document.getElementById('fullPaymentContainer').style.display = 'none';
-        
-        paypal.Buttons({
-          style: {
-            shape: 'rect',
-            color: 'gold',
-            layout: 'vertical',
-            label: 'subscribe'
-          },
-          createSubscription: (data, actions) => actions.subscription.create({
-            plan_id: 'P-75L54121H53220933M72SWBQ'
-          }),
-          onApprove: (data) => {
-            alert(`Payment successful! Subscription ID: ${data.subscriptionID}`);
-            // You can add additional success handling here
-          }
-        }).render('#paypal-button-container-P-75L54121H53220933M72SWBQ');
-      }
+      paypalButtonContainer.innerHTML = paymentOption === 'onetime' 
+        ? '<a href="YOUR_ONE_TIME_PAYMENT_LINK" class="paypal-button">Pay $600 CAD Now</a>'
+        : '<a href="YOUR_MONTHLY_PAYMENT_LINK" class="paypal-button">Set Up Monthly Payments ($300 CAD)</a>';
     }
 
     // Update payment options when selection changes
     document.querySelectorAll('input[name="paymentOption"]').forEach(radio => {
-      radio.addEventListener('change', () => {
+      radio.addEventListener('change', function() {
         if (document.getElementById('paymentOptions').style.display === 'block') {
-          loadPaypalButtons();
+          updatePaypalButton();
         }
       });
     });
   </script>
-</body>
-</html>
 </body>
 </html>
