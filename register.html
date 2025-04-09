@@ -5,51 +5,199 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register | Executive Discovery Workshops</title>
   <meta name="description" content="Register for our Business Blueprint program starting May 27, 2025. Transform your entrepreneurial vision into reality with our comprehensive 8-week course.">
+  <!-- Link to external CSS (assuming styles.css exists and is consistent) -->
   <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
+  <!-- Tailwind CSS (using CDN) -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script> <!-- Use Tailwind CDN with forms plugin -->
+  <!-- PayPal JavaScript SDK -->
   <script src="https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
-
+  <!-- EmailJS SDK -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <style>
-    /* Custom styles for registration page */
+    /* Replicating potential custom styles from styles.css if needed, based on common patterns */
+    body {
+        font-family: sans-serif; /* Basic font */
+        color: #333;
+    }
+    .container {
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    /* Header specific styles (assuming from styles.css or common practice) */
+    .site-header {
+        background-color: #fff;
+        border-bottom: 1px solid #e5e7eb; /* Tailwind gray-200 */
+        padding: 1rem 0;
+        position: sticky; /* Make header sticky */
+        top: 0;
+        z-index: 50; /* Ensure header is above other content */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow */
+    }
+    .site-header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .site-header .logo a {
+        font-weight: 700; /* Bold */
+        text-decoration: none;
+        color: #1f2937; /* Tailwind gray-800 */
+        font-size: 1.5rem; /* text-2xl */
+    }
+    .site-header .main-navigation ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: none; /* Hidden by default on mobile */
+    }
+    @media (min-width: 768px) { /* md breakpoint */
+        .site-header .main-navigation ul {
+            display: flex; /* Show flex on medium screens and up */
+        }
+    }
+    .site-header .main-navigation li {
+        margin-left: 1.5rem; /* ml-6 */
+    }
+    .site-header .main-navigation a {
+        text-decoration: none;
+        color: #4b5563; /* Tailwind gray-600 */
+        transition: color 0.2s;
+    }
+    .site-header .main-navigation a:hover {
+        color: #1d4ed8; /* Tailwind blue-700 */
+    }
+    .site-header .mobile-menu-toggle {
+        display: block; /* Show button on mobile */
+        background: none;
+        border: none;
+        font-size: 1.5rem; /* text-2xl */
+        cursor: pointer;
+        color: #4b5563; /* Tailwind gray-600 */
+    }
+    @media (min-width: 768px) { /* md breakpoint */
+        .site-header .mobile-menu-toggle {
+            display: none; /* Hide button on medium screens and up */
+        }
+    }
+    /* Mobile menu open state */
+    .site-header.menu-open .main-navigation {
+        display: block;
+        position: absolute;
+        top: 100%; /* Position below header */
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: 1px solid #e5e7eb; /* Tailwind gray-200 */
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .site-header.menu-open .main-navigation ul {
+        display: flex; /* Ensure ul is block/flex inside */
+        flex-direction: column; /* Stack links vertically */
+    }
+    .site-header.menu-open .main-navigation li {
+        margin: 0.5rem 0; /* Vertical spacing */
+        margin-left: 0; /* Reset horizontal margin */
+    }
+
+    /* Hero Section Styling - Matching about.html */
+    .page-header {
+        background-image: linear-gradient(to right, #1d4ed8, #1e3a8a); /* bg-gradient-to-r from-blue-700 to-blue-900 */
+        color: white;
+        padding-top: 4rem;    /* py-16 */
+        padding-bottom: 4rem; /* py-16 */
+        text-align: center;
+    }
+    .page-header h1 {
+        font-size: 2.25rem; /* text-4xl */
+        font-weight: 700; /* font-bold */
+        margin-bottom: 1rem; /* mb-4 */
+    }
+    .page-header p {
+        font-size: 1.125rem; /* text-xl */
+        color: #dbeafe; /* text-blue-100 */
+        max-width: 42rem; /* max-w-2xl */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Registration Form Specific Styles */
     .registration-container {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* Two columns */
-      gap: 2rem; /* Spacing between columns */
-      align-items: start; /* Align items to the top */
+      grid-template-columns: 1fr; /* Default to single column */
+      gap: 2rem;
+      align-items: start;
+      margin-top: 2rem; /* Add margin below hero */
+    }
+    @media (min-width: 1024px) { /* lg breakpoint */
+        .registration-container {
+            grid-template-columns: 2fr 1fr; /* Two columns on large screens */
+        }
     }
 
     .registration-form {
-      background-color: #f5f5f5; /* Light gray background */
-      padding: 1.5rem;
-      border-radius: 0.375rem; /* Rounded corners */
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+      background-color: #f9fafb; /* Tailwind gray-50 */
+      padding: 2rem; /* Increased padding */
+      border-radius: 0.5rem; /* Rounded corners */
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
+
+    .registration-details {
+      background-color: #f3f4f6; /* Tailwind gray-100 */
+      padding: 1.5rem;
+      border-radius: 0.5rem; /* Rounded corners */
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      /* Sticky positioning for details section on larger screens */
+      position: sticky;
+      top: 100px; /* Adjust based on header height + desired gap */
+    }
+    @media (max-width: 1023px) { /* Below lg breakpoint */
+        .registration-details {
+            position: static; /* Disable sticky on smaller screens */
+        }
+    }
+
 
     /* Radio button container styling */
     .payment-options-container {
-      margin-top: 1.5rem;
+      margin-top: 1rem;
     }
 
     /* Individual radio button option styling */
     .radio-option {
       display: flex;
       align-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem; /* Increased spacing */
+      background-color: #fff;
+      padding: 0.75rem;
+      border-radius: 0.375rem;
+      border: 1px solid #d1d5db; /* gray-300 */
+      cursor: pointer;
     }
+     .radio-option:has(input:checked) { /* Style when checked */
+        border-color: #2563eb; /* blue-600 */
+        background-color: #eff6ff; /* blue-50 */
+     }
 
     .radio-option input[type="radio"] {
-      margin-right: 0.5rem;
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0; /* Prevent shrinking */
+      margin-right: 0.75rem; /* Increased spacing */
+      width: 1rem; /* h-4 w-4 */
+      height: 1rem;
+      flex-shrink: 0;
+      /* Use Tailwind forms plugin accent color */
+      color: #2563eb; /* blue-600 */
     }
 
     .radio-option label {
-      margin-bottom: 0; /* Reset default margin */
+      margin-bottom: 0;
+      flex-grow: 1;
+      cursor: pointer;
     }
 
     /* Form group styling */
@@ -61,44 +209,53 @@
       display: block;
       margin-bottom: 0.5rem;
       font-weight: 500; /* Medium font weight */
+      color: #374151; /* gray-700 */
     }
 
     /* Required field indicator */
     .required {
-      color: #e53e3e; /* Red color */
+      color: #ef4444; /* Red color */
       margin-left: 0.25rem;
     }
 
-    /* Input, select, textarea styling */
+    /* Input, select, textarea styling (leveraging Tailwind forms plugin) */
     input[type="text"],
     input[type="email"],
     input[type="tel"],
     select,
     textarea {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #cbd5e0; /* Gray border */
-      border-radius: 0.375rem; /* Rounded corners */
+      padding: 0.75rem 1rem;
+      border: 1px solid #d1d5db; /* gray-300 */
+      border-radius: 0.375rem;
       margin-top: 0.25rem;
       font-size: 1rem;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #2563eb; /* blue-600 */
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4); /* blue focus ring */
+    }
+
 
     /* Submit button styling */
     button[type="submit"] {
-      background-color: #2b6cb0; /* Blue background */
+      background-color: #1d4ed8; /* blue-700 */
       color: white;
       font-weight: 600; /* Semi-bold */
       padding: 0.75rem 1.5rem;
       border: none;
-      border-radius: 0.375rem; /* Rounded corners */
+      border-radius: 0.375rem;
       cursor: pointer;
       font-size: 1rem;
-      transition: background-color 0.3s; /* Smooth transition */
+      transition: background-color 0.3s;
       width: 100%;
     }
 
     button[type="submit"]:hover {
-      background-color: #2c5282; /* Darker blue on hover */
+      background-color: #1e40af; /* blue-800 */
     }
 
     /* Payment options section styling */
@@ -106,9 +263,9 @@
       display: none; /* Hidden by default */
       margin-top: 2rem;
       padding: 1.5rem;
-      border: 1px solid #cbd5e0; /* Gray border */
-      border-radius: 0.5rem; /* Slightly larger radius */
-      background-color: #f7fafc; /* Very light gray background */
+      border: 1px solid #d1d5db; /* gray-300 */
+      border-radius: 0.5rem;
+      background-color: #f9fafb; /* gray-50 */
     }
 
     /* Message styling (Success/Error) */
@@ -117,24 +274,20 @@
         margin-bottom: 1rem;
         border-radius: 0.375rem;
         font-weight: 500;
+        border-width: 1px;
+        border-style: solid;
     }
     .success-message {
-        background-color: #c6f6d5; /* Light green */
-        color: #2f855a; /* Dark green */
-        border: 1px solid #9ae6b4;
+        background-color: #dcfce7; /* green-100 */
+        color: #166534; /* green-800 */
+        border-color: #86efac; /* green-300 */
     }
     .error-message {
-        background-color: #fed7d7; /* Light red */
-        color: #c53030; /* Dark red */
-        border: 1px solid #feb2b2;
+        background-color: #fee2e2; /* red-100 */
+        color: #991b1b; /* red-800 */
+        border-color: #fca5a5; /* red-300 */
     }
 
-    /* Responsive design for smaller screens */
-    @media (max-width: 768px) {
-      .registration-container {
-        grid-template-columns: 1fr; /* Stack columns */
-      }
-    }
 
     /* Ensure PayPal buttons render correctly */
     #paypalButtonContainer {
@@ -142,123 +295,191 @@
         min-height: 50px; /* Prevent layout shift while buttons load */
     }
 
-    /* Basic styles from styles.css if needed for header/footer */
-    .site-header { background-color: #fff; border-bottom: 1px solid #eee; padding: 1rem 0; }
-    .site-header .container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-    .site-header .logo a { font-weight: bold; text-decoration: none; color: #333; font-size: 1.5rem; }
-    .site-header .main-navigation ul { list-style: none; padding: 0; margin: 0; display: flex; }
-    .site-header .main-navigation li { margin-left: 1.5rem; }
-    .site-header .main-navigation a { text-decoration: none; color: #555; }
-    .site-header .mobile-menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
-    @media (max-width: 768px) {
-        .site-header .main-navigation { display: none; }
-        .site-header .mobile-menu-toggle { display: block; }
-        .site-header.menu-open .main-navigation { display: block; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-top: 1px solid #eee; padding: 1rem; }
-        .site-header.menu-open .main-navigation ul { flex-direction: column; }
-        .site-header.menu-open .main-navigation li { margin: 0.5rem 0; }
-    }
-    .page-header { background-color: #f0f4f8; padding: 2rem 0; text-align: center; margin-bottom: 2rem; }
-    .page-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-    .registration-details h3 { font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; }
+    /* Program Details Section Styling */
+     .registration-details h3 {
+        font-size: 1.25rem; /* text-xl */
+        font-weight: 600; /* font-semibold */
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #d1d5db; /* gray-300 */
+        padding-bottom: 0.5rem;
+        color: #1f2937; /* gray-800 */
+     }
     .detail-item { margin-bottom: 1.5rem; }
-    .detail-item h4 { font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; }
-    .detail-item h4 i { margin-right: 0.5rem; color: #2b6cb0; }
-    .detail-item p { margin-bottom: 0.25rem; color: #555; }
-    .detail-item strong { color: #333; }
-    .btn { display: inline-block; background-color: #2b6cb0; color: white; padding: 0.75rem 1.5rem; border-radius: 0.375rem; text-decoration: none; font-weight: 600; text-align: center; transition: background-color 0.3s; }
-    .btn:hover { background-color: #2c5282; }
-    .site-footer { background-color: #333; color: #ccc; padding: 2rem 0; margin-top: 3rem; }
+    .detail-item h4 {
+        font-size: 1rem; /* text-base */
+        font-weight: 600; /* font-semibold */
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        color: #1f2937; /* gray-800 */
+     }
+    .detail-item h4 i {
+        margin-right: 0.5rem;
+        color: #2563eb; /* blue-600 */
+        width: 1.25rem; /* Ensure consistent icon size */
+        text-align: center;
+     }
+    .detail-item p {
+        margin-bottom: 0.25rem;
+        color: #4b5563; /* gray-600 */
+        font-size: 0.9rem; /* Slightly smaller text */
+        padding-left: 1.75rem; /* Indent text under icon */
+     }
+    .detail-item strong { color: #1f2937; } /* gray-800 */
+    .detail-item a {
+        color: #1d4ed8; /* blue-700 */
+        text-decoration: underline;
+        transition: color 0.2s;
+    }
+    .detail-item a:hover {
+        color: #1e40af; /* blue-800 */
+    }
+
+    .btn { /* General button styling if needed */
+        display: inline-block;
+        background-color: #1d4ed8; /* blue-700 */
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: background-color 0.3s;
+    }
+    .btn:hover { background-color: #1e40af; /* blue-800 */ }
+
+    /* Footer Styles (Assuming consistency) */
+    .site-footer { background-color: #1f2937; /* gray-800 */ color: #d1d5db; /* gray-300 */ padding: 3rem 0; margin-top: 3rem; }
     .site-footer .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
     .site-footer .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
-    .site-footer h3, .site-footer h4 { color: #fff; margin-bottom: 1rem; }
+    .site-footer h3, .site-footer h4 { color: #f9fafb; /* gray-50 */ margin-bottom: 1rem; font-weight: 600; }
     .site-footer ul { list-style: none; padding: 0; }
     .site-footer li { margin-bottom: 0.5rem; }
-    .site-footer a { color: #ccc; text-decoration: none; }
-    .site-footer a:hover { color: #fff; }
+    .site-footer a { color: #9ca3af; /* gray-400 */ text-decoration: none; transition: color 0.2s; }
+    .site-footer a:hover { color: #f9fafb; /* gray-50 */ }
     .site-footer .social-links a { margin-right: 1rem; font-size: 1.2rem; }
-    .site-footer .footer-bottom { text-align: center; border-top: 1px solid #555; padding-top: 1rem; margin-top: 1rem; font-size: 0.9rem; }
+    .site-footer .footer-bottom { text-align: center; border-top: 1px solid #4b5563; /* gray-600 */ padding-top: 1.5rem; margin-top: 2rem; font-size: 0.875rem; /* text-sm */ color: #9ca3af; /* gray-400 */ }
+
+    /* Headings within the form */
+    .registration-form h2, .registration-form h3 {
+        font-size: 1.25rem; /* text-xl */
+        font-weight: 600; /* font-semibold */
+        color: #111827; /* gray-900 */
+        margin-bottom: 1rem; /* Add spacing below headings */
+        padding-bottom: 0.5rem; /* Space before border */
+        border-bottom: 1px solid #e5e7eb; /* gray-200 */
+    }
+     .registration-form h2.text-center { /* Keep title centered */
+        border-bottom: none;
+        margin-bottom: 0.5rem;
+     }
+
   </style>
 </head>
-<body>
+<body class="bg-gray-100"> <!-- Added a light gray background to the body -->
+
+  <!-- Updated Header - Structure and classes match about.html -->
   <header class="site-header">
     <div class="container">
       <div class="logo">
+        <!-- Make sure the link points to the homepage -->
         <a href="/businessblueprint/">Executive Discovery Workshops</a>
       </div>
-      <nav class="main-navigation">
-        <ul>
-          <li><a href="/businessblueprint/">Home</a></li>
-          <li><a href="/businessblueprint/about.html">About the Program</a></li>
-          <li><a href="/businessblueprint/business-blueprint.html">Business Blueprint</a></li>
-          <li><a href="/businessblueprint/schedule.html">Workshop Schedule</a></li>
-          <li><a href="/businessblueprint/curriculum.html">Curriculum</a></li>
-          <li><a href="/businessblueprint/register.html">Register</a></li>
+      <!-- Mobile Menu Toggle Button -->
+      <button class="mobile-menu-toggle md:hidden">
+          <i class="fas fa-bars"></i>
+          <span class="sr-only">Toggle Menu</span>
+      </button>
+      <!-- Navigation -->
+      <nav class="main-navigation hidden md:block">
+        <ul class="flex space-x-6 items-center">
+          <li><a href="/businessblueprint/" class="hover:text-blue-700">Home</a></li>
+          <li><a href="/businessblueprint/about.html" class="hover:text-blue-700">About the Program</a></li>
+          <li><a href="/businessblueprint/business-blueprint.html" class="hover:text-blue-700">Business Blueprint</a></li>
+          <li><a href="/businessblueprint/schedule.html" class="hover:text-blue-700">Workshop Schedule</a></li>
+          <li><a href="/businessblueprint/curriculum.html" class="hover:text-blue-700">Curriculum</a></li>
+          <!-- Current page link can be styled differently if desired, but consistency is fine -->
+          <li><a href="/businessblueprint/register.html" class="text-blue-700 font-semibold">Register</a></li>
         </ul>
       </nav>
-      <button class="mobile-menu-toggle">
-        <span class="sr-only">Menu</span>
-        <i class="fas fa-bars"></i>
-      </button>
+    </div>
+    <!-- Mobile Menu Container (hidden by default) -->
+    <div id="mobile-menu" class="main-navigation md:hidden hidden bg-white border-t border-gray-200 p-4">
+        <ul class="flex flex-col space-y-4">
+            <li><a href="/businessblueprint/" class="block hover:text-blue-700">Home</a></li>
+            <li><a href="/businessblueprint/about.html" class="block hover:text-blue-700">About the Program</a></li>
+            <li><a href="/businessblueprint/business-blueprint.html" class="block hover:text-blue-700">Business Blueprint</a></li>
+            <li><a href="/businessblueprint/schedule.html" class="block hover:text-blue-700">Workshop Schedule</a></li>
+            <li><a href="/businessblueprint/curriculum.html" class="block hover:text-blue-700">Curriculum</a></li>
+            <li><a href="/businessblueprint/register.html" class="block text-blue-700 font-semibold">Register</a></li>
+        </ul>
     </div>
   </header>
 
   <main>
+    <!-- Updated Hero Section - Matches about.html styling -->
     <section class="page-header">
       <div class="container">
         <h1>Register for Business Blueprint</h1>
-        <p>Join our next cohort starting May 27, 2025</p>
+        <p class="max-w-2xl mx-auto">Secure your spot in our upcoming cohort starting May 27, 2025. Complete the form below to begin.</p>
       </div>
     </section>
 
-    <div class="container registration-container">
+    <!-- Registration Content Area -->
+    <div class="container registration-container py-12">
+      <!-- Left Column: Registration Form -->
       <div class="registration-form">
         <h2 class="text-2xl font-semibold text-center mb-4">Secure Your Spot</h2>
-        
-        <p class="mb-6 text-gray-700">
+
+        <p class="mb-6 text-gray-600 text-sm"> <!-- Adjusted text size/color -->
           Complete the form below to register for the Business Blueprint program. After submission, you'll be shown payment options to confirm your registration.
         </p>
-        
+
+        <!-- Success Message Area -->
         <div id="successMessage" class="success-message" style="display: none;">
           Your registration details have been received. Please complete the payment below to finalize your enrollment.
         </div>
-        
+
+        <!-- General Error Message Area -->
         <div id="errorMessage" class="error-message" style="display: none;">
           There was an error. Please check your details or try again later.
         </div>
 
+        <!-- Email Specific Error Message Area -->
         <div id="emailErrorMessage" class="error-message" style="display: none;">
           Payment successful, but we encountered an issue sending the confirmation email. Please contact support. Your registration is confirmed.
         </div>
 
         <form id="registrationForm">
-          <h3 class="text-xl font-semibold mb-4 border-b pb-2">Personal Information</h3>
-          
+          <!-- Personal Information -->
+          <h3>Personal Information</h3>
+
           <div class="form-group">
             <label for="fullName">Full Name <span class="required">*</span></label>
-            <input type="text" id="fullName" name="fullName" required>
+            <input type="text" id="fullName" name="fullName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
           </div>
-          
+
           <div class="form-group">
             <label for="email">Email Address <span class="required">*</span></label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
           </div>
-          
+
           <div class="form-group">
             <label for="phone">Phone Number <span class="required">*</span></label>
-            <input type="tel" id="phone" name="phone" required>
+            <input type="tel" id="phone" name="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
           </div>
-          
+
           <div class="form-group">
             <label for="address">Home Address <span class="required">*</span></label>
-            <textarea id="address" name="address" rows="3" required></textarea>
+            <textarea id="address" name="address" rows="3" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
           </div>
-          
-          <h3 class="text-xl font-semibold my-4 border-b pb-2">Business Information</h3>
-          
+
+          <!-- Business Information -->
+          <h3 class="mt-6">Business Information</h3>
+
           <div class="form-group">
             <label for="businessExperience">Business Experience Level <span class="required">*</span></label>
-            <select id="businessExperience" name="businessExperience" required>
+            <select id="businessExperience" name="businessExperience" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
               <option value="">Select your experience level</option>
               <option value="No experience">No experience</option>
               <option value="Some experience">Some experience (less than 2 years)</option>
@@ -266,22 +487,23 @@
               <option value="Very experienced">Very experienced (5+ years)</option>
             </select>
           </div>
-          
+
           <div class="form-group">
             <label for="businessDescription">Describe Your Business, If You Have One. If Not, Describe Your Job, and Business Ideas <span class="required">*</span></label>
-            <textarea id="businessDescription" name="businessDescription" rows="4" required></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label for="businessGoals">Main Goals for the Program <span class="required">*</span></label>
-            <textarea id="businessGoals" name="businessGoals" rows="4" required></textarea>
+            <textarea id="businessDescription" name="businessDescription" rows="4" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
           </div>
 
-          <h3 class="text-xl font-semibold my-4 border-b pb-2">Referral Information</h3>
+          <div class="form-group">
+            <label for="businessGoals">Main Goals for the Program <span class="required">*</span></label>
+            <textarea id="businessGoals" name="businessGoals" rows="4" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+          </div>
+
+          <!-- Referral Information -->
+          <h3 class="mt-6">Referral Information</h3>
 
           <div class="form-group">
               <label for="referralSource">How did you hear about us? <span class="required">*</span></label>
-              <select id="referralSource" name="referralSource" required>
+              <select id="referralSource" name="referralSource" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                   <option value="">-- Select an option --</option>
                   <option value="Social Media (LinkedIn, Facebook, etc.)">Social Media (LinkedIn, Facebook, etc.)</option>
                   <option value="Friend or Colleague">Friend or Colleague</option>
@@ -295,66 +517,74 @@
 
           <div class="form-group">
               <label for="referralName">Referred by (Name, if applicable):</label>
-              <input type="text" id="referralName" name="referralName" placeholder="Enter name if referred by someone">
+              <input type="text" id="referralName" name="referralName" placeholder="Enter name if referred by someone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
           </div>
-          
-          <h3 class="text-xl font-semibold my-4 border-b pb-2">Payment Options</h3>
-          <p class="mb-2 text-gray-700">Select your preferred payment option:</p>
-          
-          <div class="payment-options-container">
+
+          <!-- Payment Options -->
+          <h3 class="mt-6">Payment Options</h3>
+          <p class="mb-3 text-sm text-gray-600">Select your preferred payment option:</p> <!-- Adjusted text -->
+
+          <div class="payment-options-container space-y-3"> <!-- Added spacing between radios -->
             <div class="radio-option">
-              <input type="radio" id="oneTimePayment" name="paymentOption" value="onetime" checked>
-              <label for="oneTimePayment">One-time payment ($600 CAD)</label>
+              <input type="radio" id="oneTimePayment" name="paymentOption" value="onetime" checked class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+              <label for="oneTimePayment" class="ml-3 block text-sm font-medium text-gray-700">One-time payment ($600 CAD)</label>
             </div>
             <div class="radio-option">
-              <input type="radio" id="monthlyPayment" name="paymentOption" value="monthly">
-              <label for="monthlyPayment">Monthly payments (2 payments of $300 CAD)</label>
+              <input type="radio" id="monthlyPayment" name="paymentOption" value="monthly" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+              <label for="monthlyPayment" class="ml-3 block text-sm font-medium text-gray-700">Monthly payments (2 x $300 CAD)</label>
             </div>
           </div>
-          
-          <button type="submit" id="submitButton" class="mt-6">Proceed to Payment</button>
+
+          <button type="submit" id="submitButton" class="mt-8 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"> <!-- Adjusted button styles -->
+              Proceed to Payment
+          </button>
         </form>
-        
+
+        <!-- Payment Options Section (Initially Hidden) -->
         <div id="paymentOptions" class="payment-options">
-          <h3 class="text-xl font-semibold mb-2">Complete Your Registration</h3>
-          <p class="mb-4 text-gray-700">To secure your spot in the Business Blueprint program, please complete your payment using the PayPal button below.</p>
-          <div id="paypalButtonContainer">
-             </div>
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Complete Your Registration</h3> <!-- Adjusted heading style -->
+          <p class="mt-1 text-sm text-gray-600">To secure your spot in the Business Blueprint program, please complete your payment using the PayPal button below.</p>
+          <!-- PayPal Button Container -->
+          <div id="paypalButtonContainer" class="mt-4">
+             <!-- PayPal button will be rendered here by JavaScript -->
+          </div>
         </div>
       </div>
-      
-      <div class="registration-details bg-gray-100 p-6 rounded-lg shadow-sm">
-        <h3 class="text-xl font-semibold mb-4 border-b pb-2">Program Details</h3>
+
+      <!-- Right Column: Program Details -->
+      <div class="registration-details">
+        <h3>Program Details</h3>
 
         <div class="detail-item">
-          <h4><i class="fas fa-calendar-alt"></i> Program Dates</h4>
+          <h4><i class="fas fa-calendar-alt fa-fw"></i> Program Dates</h4> <!-- Added fa-fw for fixed width -->
           <p>May 27 - July 15, 2025</p>
           <p>8 weekly sessions held every Tuesday at 7:30 PM EST</p>
         </div>
 
         <div class="detail-item">
-          <h4><i class="fas fa-dollar-sign"></i> Investment</h4>
+          <h4><i class="fas fa-dollar-sign fa-fw"></i> Investment</h4>
           <p><strong>$600 CAD</strong> total (one-time)</p>
           <p>or <strong>2 payments of $300 CAD</strong> (monthly)</p>
           <p>Includes all course materials, session recordings, templates, and access to our private community forum.</p>
         </div>
 
         <div class="detail-item">
-          <h4><i class="fas fa-user-friends"></i> Limited Capacity</h4>
+          <h4><i class="fas fa-user-friends fa-fw"></i> Limited Capacity</h4>
           <p>We limit each cohort to 25 participants to ensure personalized attention and feedback.</p>
-          <p><strong>Spots remaining: 7</strong> (Example - update as needed)</p>
+          <p><strong>Spots remaining: 7</strong> (Example)</p>
         </div>
 
         <div class="detail-item">
-          <h4><i class="fas fa-question-circle"></i> Have Questions?</h4>
-          <p>Contact us at <a href="mailto:info@executivediscovery.com" class="text-blue-600 hover:underline">info@executivediscovery.com</a> or call <a href="tel:5551234567" class="text-blue-600 hover:underline">(555) 123-4567</a> to speak with our team.</p>
+          <h4><i class="fas fa-question-circle fa-fw"></i> Have Questions?</h4>
+          <p>Contact us at <a href="mailto:info@executivediscovery.com">info@executivediscovery.com</a> or call <a href="tel:5551234567">(555) 123-4567</a> to speak with our team.</p>
         </div>
 
-        <a href="/businessblueprint/business-blueprint.html" class="btn mt-4 w-full">Learn More About the Program</a>
+        <a href="/businessblueprint/business-blueprint.html" class="btn mt-6 w-full block">Learn More About the Program</a> <!-- Made button block -->
       </div>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
@@ -375,18 +605,18 @@
         </div>
         <div class="footer-contact">
           <h4>Contact Us</h4>
-          <p><i class="fas fa-envelope"></i> info@executivediscovery.com</p>
-          <p><i class="fas fa-phone"></i> (555) 123-4567</p>
-          <div class="social-links">
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
+          <p><i class="fas fa-envelope mr-2"></i> info@executivediscovery.com</p> <!-- Added margin to icon -->
+          <p><i class="fas fa-phone mr-2"></i> (555) 123-4567</p>
+          <div class="social-links mt-4 flex space-x-4"> <!-- Added spacing -->
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2025 Executive Discovery Workshops. All Rights Reserved.</p>
+        <p>&copy; 2025 Executive Discovery Workshops. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
@@ -409,7 +639,7 @@
     const paypalButtonContainer = document.getElementById('paypalButtonContainer');
     const paymentOptionRadios = document.querySelectorAll('input[name="paymentOption"]');
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const siteHeader = document.querySelector('.site-header');
+    const mobileMenu = document.getElementById('mobile-menu'); // Get the mobile menu container
 
     // --- State Variable ---
     let registrationData = null; // To store form data after submission
@@ -427,36 +657,27 @@
     function sendRegistrationEmail() {
       if (!registrationData) {
         console.error('No registration data available to send.');
-        // Show general error, although this shouldn't happen in normal flow
         errorMessage.textContent = 'An unexpected error occurred. Could not send confirmation email.';
         errorMessage.style.display = 'block';
-        // Still redirect, payment was successful
         window.location.href = THANK_YOU_PAGE_URL;
         return;
       }
 
-      // Add the selected payment option to the data being sent
-      // Note: referralSource and referralName are already included
-      // because they were part of the form data captured earlier.
       const selectedOption = document.querySelector('input[name="paymentOption"]:checked');
       registrationData.paymentOption = selectedOption ? selectedOption.labels[0].innerText : 'Not specified';
 
-      console.log('Sending email with data:', registrationData); // Log data being sent
+      console.log('Sending email with data:', registrationData);
 
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, registrationData)
         .then(function(response) {
            console.log('EmailJS SUCCESS!', response.status, response.text);
-           // Email sent successfully, redirect to thank you page
            window.location.href = THANK_YOU_PAGE_URL;
         }, function(error) {
            console.error('EmailJS FAILED...', error);
-           // Show specific email error message
            emailErrorMessage.style.display = 'block';
-           // Still redirect to thank you page as payment was successful
-           // Add a small delay so the user might see the message
            setTimeout(() => {
                window.location.href = THANK_YOU_PAGE_URL;
-           }, 3000); // 3 second delay
+           }, 3000);
         });
     }
 
@@ -466,115 +687,99 @@
     function renderPayPalButton() {
         const selectedOption = document.querySelector('input[name="paymentOption"]:checked').value;
         const planId = selectedOption === 'onetime' ? PAYPAL_PLAN_ID_ONETIME : PAYPAL_PLAN_ID_MONTHLY;
-        const buttonLabel = selectedOption === 'onetime' ? 'paypal' : 'subscribe'; // Use 'paypal' for one-time, 'subscribe' for subscription
+        const buttonLabel = selectedOption === 'onetime' ? 'paypal' : 'subscribe';
 
         console.log(`Rendering PayPal button for plan: ${planId} (Option: ${selectedOption})`);
+        paypalButtonContainer.innerHTML = ''; // Clear previous button
 
-        // Clear previous button if any
-        paypalButtonContainer.innerHTML = '';
-
-        // Render the new button
         try {
             paypal.Buttons({
                 style: {
-                    shape: 'rect',
-                    color: 'gold',
+                    shape: 'rect', // Consistent shape
+                    color: 'gold', // PayPal gold
                     layout: 'vertical',
-                    label: buttonLabel // Dynamic label
+                    label: buttonLabel,
+                    tagline: false // Remove tagline for cleaner look
                 },
                 createSubscription: function(data, actions) {
                     console.log('Creating subscription for plan ID:', planId);
-                    return actions.subscription.create({
-                        /* Creates the subscription */
-                        plan_id: planId
-                    });
+                    return actions.subscription.create({ plan_id: planId });
                 },
                 onApprove: function(data, actions) {
                     console.log('PayPal payment approved:', data);
-                    // Disable the PayPal button area to prevent double clicks
-                    paypalButtonContainer.innerHTML = '<p class="text-center font-semibold text-green-600">Payment processing...</p>';
-                    // Payment successful, now send the email
+                    paypalButtonContainer.innerHTML = '<p class="text-center font-semibold text-green-600 py-4">Payment processing, please wait...</p>'; // Improved processing message
                     sendRegistrationEmail();
-                    // Note: Redirection happens inside sendRegistrationEmail() after attempt
                 },
                 onError: function (err) {
                     console.error('PayPal Button Error:', err);
                     errorMessage.textContent = 'An error occurred with the PayPal payment. Please try again or contact support.';
                     errorMessage.style.display = 'block';
-                    // Re-render the button in case it was a temporary issue
-                    renderPayPalButton();
+                    renderPayPalButton(); // Attempt to re-render
                 },
                 onCancel: function (data) {
                     console.log('PayPal payment cancelled:', data);
-                    // Optional: Show a message that payment was cancelled
+                    // Optional: Show a message
                 }
-            }).render('#paypalButtonContainer'); // Renders the PayPal button
+            }).render('#paypalButtonContainer');
         } catch (error) {
             console.error("Error rendering PayPal button: ", error);
-            paypalButtonContainer.innerHTML = '<p class="text-red-600">Error loading payment options. Please refresh the page or contact support.</p>';
+            paypalButtonContainer.innerHTML = '<p class="text-red-600 p-4 bg-red-100 rounded">Error loading payment options. Please refresh the page or contact support.</p>'; // Improved error display
         }
     }
 
     // --- Event Listeners ---
 
     // Mobile Menu Toggle
-    if (mobileMenuToggle && siteHeader) {
+    if (mobileMenuToggle && mobileMenu) {
         mobileMenuToggle.addEventListener('click', function() {
-            siteHeader.classList.toggle('menu-open');
+            mobileMenu.classList.toggle('hidden'); // Toggle visibility of the mobile menu container
+            // Optional: Toggle ARIA attribute for accessibility
+            const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+            mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
         });
     } else {
-        console.warn('Mobile menu toggle or site header element not found.');
+        console.warn('Mobile menu toggle button or mobile menu container not found.');
     }
 
 
     // Form Submission Handler
     registrationForm.addEventListener('submit', function(e) {
-      e.preventDefault(); // Prevent default form submission
+      e.preventDefault();
 
-      // Clear previous messages
       successMessage.style.display = 'none';
       errorMessage.style.display = 'none';
       emailErrorMessage.style.display = 'none';
 
-      // Validate form using HTML5 validation
       if (!this.checkValidity()) {
-        // Find the first invalid field and focus it for better UX
         const firstInvalidField = this.querySelector(':invalid');
         if (firstInvalidField) {
             firstInvalidField.focus();
+            // Optional: Scroll to the invalid field if it's off-screen
+            // firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        this.reportValidity(); // Show browser validation messages
+        this.reportValidity();
         return;
       }
 
-      // --- Form is valid, proceed ---
-
-      // 1. Gather form data
       const formData = new FormData(this);
-      registrationData = {}; // Reset/initialize registrationData
-      // Convert FormData to a plain object suitable for EmailJS
+      registrationData = {};
       formData.forEach((value, key) => {
-          registrationData[key] = value; // Assuming names match directly
+          registrationData[key] = value;
       });
       console.log('Form data captured:', registrationData);
 
+      this.style.display = 'none';
+      successMessage.style.display = 'block';
+      paymentOptionsDiv.style.display = 'block';
 
-      // 2. Update UI: Hide form, show success message and payment section
-      this.style.display = 'none'; // Hide the form itself
-      successMessage.style.display = 'block'; // Show confirmation message
-      paymentOptionsDiv.style.display = 'block'; // Show the payment section
-
-      // 3. Render the correct PayPal button
       renderPayPalButton();
 
-      // 4. Scroll to payment options for better UX
       paymentOptionsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
     // Update PayPal button if the payment option changes *after* the form is submitted
     paymentOptionRadios.forEach(radio => {
       radio.addEventListener('change', function() {
-        // Only re-render if the payment section is already visible
         if (paymentOptionsDiv.style.display === 'block') {
           console.log('Payment option changed, re-rendering PayPal button.');
           renderPayPalButton();
