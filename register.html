@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <script src="https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AcSoXi_goLU6xR0RD4Zu7FyfXd2gTDasE8UuHPvZHc67ygZ_-ealtDV8Sbf2JgsRmT_STFhVf8ReGgw1&vault=true&intent=subscription¤cy=CAD" data-sdk-integration-source="button-factory"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <style>
@@ -445,126 +445,168 @@
     </div>
   </footer>
 
-  <script>
+    <script>
     // --- Configuration ---
     const EMAILJS_SERVICE_ID = 'service_lnrg1h1';
     const EMAILJS_TEMPLATE_ID = 'template_aehp1ev';
     const EMAILJS_PUBLIC_KEY = 'QzPU4nIsl3TTDh4xn';
-    const PAYPAL_PLAN_ID_ONETIME = 'P-2Y9180536W353780GM72T6WQ';
-    const PAYPAL_PLAN_ID_MONTHLY = 'P-75L54121H53220933M72SWBQ';
-    const THANK_YOU_PAGE_URL = 'https://executivediscovery.ca/thankyou.html';
+    const PAYPAL_ONETIME_PAYMENT_LINK = 'https://www.paypal.com/ncp/payment/AXV4GWZH3HCGG'; // Your direct payment link
+    const PAYPAL_PLAN_ID_MONTHLY = 'P-75L54121H53220933M72SWBQ'; // Your subscription plan ID
+    const THANK_YOU_PAGE_URL = 'https://executivediscovery.ca/thankyou.html'; // Your thank you page
 
     // --- Element References ---
     const registrationForm = document.getElementById('registrationForm');
     const successMessage = document.getElementById('successMessage');
     const errorMessage = document.getElementById('errorMessage');
-    const emailErrorMessage = document.getElementById('emailErrorMessage');
+    const emailErrorMessage = document.getElementById('emailErrorMessage'); // Keep this for email sending errors
     const paymentOptionsDiv = document.getElementById('paymentOptions');
     const paypalButtonContainer = document.getElementById('paypalButtonContainer');
     const paymentOptionRadios = document.querySelectorAll('input[name="paymentOption"]');
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const siteHeader = document.querySelector('.site-header'); // Target the header itself
+    const siteHeader = document.querySelector('.site-header');
 
     // --- State Variable ---
-    let registrationData = null; // To store form data after submission
+    // We don't strictly need to store registrationData globally anymore with this approach,
+    // but it doesn't hurt if other parts might use it later.
+    let registrationData = null;
 
     // --- Initialize EmailJS ---
     (function(){
-        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        try {
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        } catch(e) {
+            console.error("Failed to initialize EmailJS:", e);
+            // Maybe display a persistent error on the page?
+        }
     })();
 
     // --- Functions ---
 
     /**
      * Sends registration data using EmailJS.
+     * Triggered immediately after form submission in this version.
+     * Does NOT handle redirection itself.
      */
-    function sendRegistrationEmail() {
-      if (!registrationData) {
-        console.error('No registration data available to send.');
-        errorMessage.textContent = 'An unexpected error occurred. Could not send confirmation email.';
-        errorMessage.style.display = 'block';
-        window.location.href = THANK_YOU_PAGE_URL;
-        return;
+    function sendRegistrationEmail(dataToSend) {
+      if (!dataToSend) {
+        console.error('No registration data provided to send.');
+        emailErrorMessage.textContent = 'An unexpected error occurred (missing data for email). Please try again.';
+        emailErrorMessage.style.display = 'block';
+        return; // Stop if no data
       }
 
-      const selectedOption = document.querySelector('input[name="paymentOption"]:checked');
-      // Get the text from the label associated with the checked radio
-      const selectedLabel = selectedOption ? selectedOption.nextElementSibling.textContent : 'Not specified';
-      registrationData.paymentOption = selectedLabel.trim(); // Add trimmed label text
+      console.log('Sending registration email with data:', dataToSend);
+      emailErrorMessage.style.display = 'none'; // Hide previous email errors
 
-      console.log('Sending email with data:', registrationData);
-
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, registrationData)
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, dataToSend)
         .then(function(response) {
            console.log('EmailJS SUCCESS!', response.status, response.text);
-           window.location.href = THANK_YOU_PAGE_URL;
+           // Email sent successfully. User proceeds to payment UI.
+           // No redirect here. Redirect happens after PayPal interaction.
         }, function(error) {
            console.error('EmailJS FAILED...', error);
+           // Show the specific email error message
+           emailErrorMessage.textContent = 'Registration details saved, but we encountered an issue sending the confirmation email. Please check your details or contact support if you don\'t receive it. You can proceed with payment.';
            emailErrorMessage.style.display = 'block';
-           setTimeout(() => {
-               window.location.href = THANK_YOU_PAGE_URL;
-           }, 3000);
+           // IMPORTANT: Let the user continue to payment even if email fails here.
         });
     }
 
     /**
-     * Renders the appropriate PayPal button based on the selected payment option.
+     * Renders the appropriate PayPal button/link based on the selected payment option.
      */
     function renderPayPalButton() {
         const selectedOption = document.querySelector('input[name="paymentOption"]:checked').value;
-        const planId = selectedOption === 'onetime' ? PAYPAL_PLAN_ID_ONETIME : PAYPAL_PLAN_ID_MONTHLY;
-        const buttonLabel = selectedOption === 'onetime' ? 'paypal' : 'subscribe';
+        paypalButtonContainer.innerHTML = ''; // Clear previous button/content
+        errorMessage.style.display = 'none'; // Hide general PayPal errors before rendering
 
-        console.log(`Rendering PayPal button for plan: ${planId} (Option: ${selectedOption})`);
-        paypalButtonContainer.innerHTML = ''; // Clear previous button
+        console.log(`Rendering PayPal UI for option: ${selectedOption}`);
 
-        try {
-            paypal.Buttons({
-                style: {
-                    shape: 'rect',
-                    color: 'gold',
-                    layout: 'vertical',
-                    label: buttonLabel,
-                    tagline: false
-                },
-                createSubscription: function(data, actions) {
-                    console.log('Creating subscription for plan ID:', planId);
-                    return actions.subscription.create({ plan_id: planId });
-                },
-                onApprove: function(data, actions) {
-                    console.log('PayPal payment approved:', data);
-                    paypalButtonContainer.innerHTML = '<p>Payment processing, please wait...</p>'; // Simple processing message
-                    sendRegistrationEmail();
-                },
-                onError: function (err) {
-                    console.error('PayPal Button Error:', err);
-                    errorMessage.textContent = 'An error occurred with the PayPal payment. Please try again or contact support.';
-                    errorMessage.style.display = 'block';
-                    renderPayPalButton(); // Attempt to re-render
-                },
-                onCancel: function (data) {
-                    console.log('PayPal payment cancelled:', data);
-                }
-            }).render('#paypalButtonContainer');
-        } catch (error) {
-            console.error("Error rendering PayPal button: ", error);
-            paypalButtonContainer.innerHTML = '<p class="message error-message">Error loading payment options. Please refresh the page or contact support.</p>';
+        // --- Configuration for One-Time Payment (Direct Link) ---
+        if (selectedOption === 'onetime') {
+            console.log(`Configuring for One-Time Payment using Link: ${PAYPAL_ONETIME_PAYMENT_LINK}`);
+
+            const paymentLinkButton = document.createElement('a');
+            paymentLinkButton.href = PAYPAL_ONETIME_PAYMENT_LINK;
+            paymentLinkButton.textContent = 'Pay $600 CAD Now with PayPal';
+            paymentLinkButton.target = '_blank';
+            paymentLinkButton.rel = 'noopener noreferrer';
+            paymentLinkButton.classList.add('btn', 'btn-primary');
+            paymentLinkButton.style.display = 'inline-block';
+            paymentLinkButton.style.width = '100%';
+            paymentLinkButton.style.textAlign = 'center';
+            paymentLinkButton.style.marginTop = 'var(--space-md)';
+            paypalButtonContainer.appendChild(paymentLinkButton);
+            console.log("Direct payment link button rendered.");
+            // NOTE: User needs to click this link. Redirect happens via PayPal's Return URL setting.
+
+        // --- Configuration for Monthly Subscription (Standard JS SDK Button) ---
+        } else if (selectedOption === 'monthly') {
+            const planId = PAYPAL_PLAN_ID_MONTHLY;
+            console.log(`Configuring for Subscription: Plan ID ${planId}`);
+
+            try {
+                paypal.Buttons({
+                    style: {
+                        shape: 'rect',
+                        color: 'gold',
+                        layout: 'vertical',
+                        label: 'subscribe',
+                        tagline: false
+                    },
+                    createSubscription: function(data, actions) {
+                        console.log('Creating subscription for plan ID:', planId);
+                        return actions.subscription.create({
+                            plan_id: planId
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        // Subscription approved!
+                        console.log('PayPal subscription approved:', data);
+                        paypalButtonContainer.innerHTML = '<p>Subscription processing, please wait...</p>';
+                        // ** Email was ALREADY sent earlier **
+                        // Redirect to thank you page AFTER approval.
+                        window.location.href = THANK_YOU_PAGE_URL;
+                    },
+                    onError: function (err) {
+                        // Handles errors for the subscription button rendering or process
+                        console.error('PayPal Button Error (Subscription):', err);
+                        errorMessage.textContent = 'An error occurred with the PayPal subscription setup. Please try again or contact support.';
+                        errorMessage.style.display = 'block';
+                        // Attempt to re-render the button if it fails loading initially
+                        renderPayPalButton();
+                    },
+                    onCancel: function (data) {
+                        // Handles user cancelling the subscription flow on PayPal's site
+                        console.log('PayPal subscription cancelled:', data);
+                        errorMessage.textContent = 'Subscription cancelled. You can select an option and try again.';
+                        errorMessage.style.display = 'block';
+                    }
+                }).render('#paypalButtonContainer');
+            } catch (error) {
+                console.error("Error rendering PayPal JS SDK Button (Subscription): ", error);
+                paypalButtonContainer.innerHTML = '<p class="message error-message">Error loading subscription payment option. Please refresh the page or contact support.</p>';
+                errorMessage.style.display = 'block'; // Show general error message div
+            }
+        } else {
+            console.error("No valid payment option selected.");
+            paypalButtonContainer.innerHTML = '<p class="message error-message">Please select a payment option.</p>';
+            errorMessage.style.display = 'block';
         }
     }
 
     // --- Event Listeners ---
 
-    // Mobile Menu Toggle - Corrected to match about.html logic
+    // Mobile Menu Toggle
     if (mobileMenuToggle && siteHeader) {
         mobileMenuToggle.addEventListener('click', function() {
-            siteHeader.classList.toggle('menu-open'); // Toggle class on the header
+            siteHeader.classList.toggle('menu-open');
         });
     } else {
         console.warn('Mobile menu toggle button or site header element not found.');
     }
 
-
-    // Form Submission Handler
+    // Form Submission Handler - Sends email immediately, then shows payment UI
     registrationForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -573,6 +615,7 @@
       errorMessage.style.display = 'none';
       emailErrorMessage.style.display = 'none';
 
+      // Basic form validation check
       if (!this.checkValidity()) {
         const firstInvalidField = this.querySelector(':invalid');
         if (firstInvalidField) {
@@ -582,32 +625,44 @@
         return;
       }
 
-      // Gather form data
+      // --- Gather form data ---
       const formData = new FormData(this);
-      registrationData = {};
+      registrationData = {}; // Prepare data object
       formData.forEach((value, key) => {
           registrationData[key] = value;
       });
+      const selectedOptionRadio = document.querySelector('input[name="paymentOption"]:checked');
+      const selectedLabel = selectedOptionRadio ? selectedOptionRadio.nextElementSibling.textContent : 'Not specified';
+      registrationData.paymentOption = selectedLabel.trim(); // Add payment choice text to data
+
       console.log('Form data captured:', registrationData);
 
-      // Update UI
-      this.style.display = 'none';
-      successMessage.style.display = 'block';
-      paymentOptionsDiv.style.display = 'block';
+      // --- SEND EMAIL IMMEDIATELY ---
+      // This happens BEFORE the user interacts with PayPal.
+      // User gets email even if they don't complete payment.
+      console.log("Sending confirmation email NOW, before payment interaction...");
+      sendRegistrationEmail(registrationData);
 
-      // Render PayPal button
+      // --- Update UI ---
+      this.style.display = 'none'; // Hide the form
+      successMessage.textContent = 'Your registration details have been received and a confirmation email is being sent. Please complete the payment below to finalize your enrollment.'; // Update text slightly
+      successMessage.style.display = 'block'; // Show success message
+      paymentOptionsDiv.style.display = 'block'; // Show the payment container div
+
+      // --- Render the correct PayPal UI (Link or Button) ---
       renderPayPalButton();
 
       // Scroll to payment section
       paymentOptionsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
-    // Update PayPal button if the payment option changes *after* the form is submitted
+    // Update PayPal button/link if the payment option changes *after* the form is submitted
     paymentOptionRadios.forEach(radio => {
       radio.addEventListener('change', function() {
+        // Only re-render if the payment section is already visible
         if (paymentOptionsDiv.style.display === 'block') {
-          console.log('Payment option changed, re-rendering PayPal button.');
-          renderPayPalButton();
+          console.log('Payment option changed, re-rendering PayPal UI.');
+          renderPayPalButton(); // Call the function to show the correct button/link
         }
       });
     });
